@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta — __CLIENTE__</title>
+<!--
+  COMO USAR
+
+  1. Duplique este arquivo com o nome do cliente:
+       cp proposta-modelo.html proposta-2026-10-padaria-silva.html
+  2. Abra num editor de texto e substitua todos os marcadores __ASSIM__.
+  3. Apague as linhas de escopo que não se aplicam.
+  4. Confira que não sobrou marcador:
+       grep -n "__" proposta-<nome>.html
+     A saída correta é vazia.
+  5. Abra no navegador e imprima em PDF (Cmd+P → Salvar como PDF).
+
+  Este arquivo é modelo. Nunca envie o modelo ao cliente.
+-->
+<style>
+  :root {
+    --ink:#14181C; --muted:#555C64; --faint:#8A9199;
+    --line:#E0E2E0; --accent:#1B4965; --sunk:#F4F5F3;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:#fff; color:var(--ink);
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size:15px; line-height:1.55;
+  }
+  .page { max-width:760px; margin:0 auto; padding:52px 44px 72px; }
+
+  header { display:flex; align-items:flex-start; gap:20px; padding-bottom:20px; border-bottom:2px solid var(--ink); }
+  header h1 { font-size:25px; margin:0; letter-spacing:-.02em; }
+  header .meta { margin-left:auto; text-align:right; font-size:12.5px; color:var(--muted); line-height:1.7; }
+
+  h2 {
+    font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--accent); margin:30px 0 10px;
+  }
+  p { margin:0 0 10px; max-width:64ch; }
+  ul { margin:0; padding-left:20px; }
+  li { margin-bottom:5px; }
+
+  .box { background:var(--sunk); border-radius:6px; padding:16px 20px; }
+  .out li { color:var(--muted); }
+
+  table.preco { width:100%; border-collapse:collapse; margin-top:6px; }
+  table.preco td { padding:9px 0; border-bottom:1px solid var(--line); }
+  table.preco td:last-child { text-align:right; font-variant-numeric:tabular-nums; }
+  table.preco tr.total td { border-bottom:0; border-top:2px solid var(--ink); font-weight:700; font-size:18px; padding-top:12px; }
+
+  .assina { display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:44px; }
+  .assina div { border-top:1px solid var(--ink); padding-top:8px; font-size:12.5px; color:var(--muted); }
+
+  footer { margin-top:42px; padding-top:16px; border-top:1px solid var(--line); font-size:12px; color:var(--faint); }
+
+  @media print {
+    .page { padding:0; max-width:none; }
+    body { font-size:11.5pt; }
+    h2 { margin-top:20px; }
+    .assina { margin-top:34px; }
+    @page { margin:18mm; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div>
+      <h1>Proposta de desenvolvimento</h1>
+      <p style="margin:6px 0 0;color:var(--muted);font-size:14px">__NOME_DO_APLICATIVO__</p>
+    </div>
+    <div class="meta">
+      <strong>Para</strong><br>__CLIENTE__<br><br>
+      <strong>De</strong><br>Wagner Wrunski<br>sdwrunski@gmail.com<br><br>
+      __DATA__ · válida por 30 dias
+    </div>
+  </header>
+
+  <h2>O que será construído</h2>
+  <p>__DESCRICAO_EM_TRES_LINHAS__ Aplicativo para Android e iOS, a partir do mesmo código, entregue publicado nas duas lojas.</p>
+
+  <h2>Está incluído</h2>
+  <ul>
+    <li>Levantamento do escopo, com as decisões registradas por escrito</li>
+    <li>__TELA_1__</li>
+    <li>__TELA_2__</li>
+    <li>__TELA_3__</li>
+    <li>Três idiomas: português, inglês e espanhol</li>
+    <li>Tema claro e escuro, e acessibilidade para leitor de tela</li>
+    <li>Ícone e tela de abertura próprios</li>
+    <li>Testes automatizados e varredura manual documentada antes de publicar</li>
+    <li>Política de privacidade e declaração de coleta de dados</li>
+    <li>Publicação na Google Play e na App Store, incluindo o processo de teste exigido pelas lojas</li>
+    <li>Código-fonte e documentação entregues a você</li>
+    <li>Duas rodadas de ajuste depois da entrega, dentro do escopo acima</li>
+  </ul>
+
+  <h2>Não está incluído</h2>
+  <div class="box out">
+    <ul>
+      <li>Servidor, conta de usuário e sincronização entre aparelhos</li>
+      <li>Conteúdo: textos, fotos, catálogo de produtos</li>
+      <li>Integração com sistema de pagamento</li>
+      <li>Contas de desenvolvedor das lojas, que ficam no seu nome — __CUSTO_CONTAS__</li>
+      <li>Manutenção depois da entrega, tratada abaixo</li>
+      <li>Funcionalidade não listada acima, que vira orçamento separado</li>
+    </ul>
+  </div>
+
+  <h2>Prazo</h2>
+  <p><strong>__PRAZO_EM_SEMANAS__ semanas</strong> a partir da assinatura e do pagamento da primeira parcela.</p>
+  <p>O prazo conta dias úteis e não inclui o tempo de revisão das lojas, que é da Google e da Apple e costuma levar de um a sete dias.</p>
+
+  <h2>Preço</h2>
+  <table class="preco">
+    <tr><td>Desenvolvimento, testes e publicação</td><td>__VALOR__ €</td></tr>
+    <tr class="total"><td>Total</td><td>__VALOR__ €</td></tr>
+  </table>
+  <p style="margin-top:12px"><strong>Metade na assinatura</strong> desta proposta, <strong>metade na entrega</strong>, antes da publicação nas lojas.</p>
+
+  <h2>O que eu preciso de você</h2>
+  <p>O prazo depende disto tanto quanto do meu trabalho:</p>
+  <ul>
+    <li>Os conteúdos — textos, imagens, dados — até __PRAZO_CONTEUDO__</li>
+    <li>Resposta às minhas perguntas em até 3 dias úteis</li>
+    <li>Acesso às contas de desenvolvedor das lojas, ou autorização para criá-las no seu nome</li>
+    <li>Uma pessoa como ponto de contato para decidir</li>
+  </ul>
+  <p>Atraso nesses itens estende o prazo no mesmo número de dias, sem custo adicional.</p>
+
+  <h2>Depois da entrega</h2>
+  <p>O código e a documentação são seus, sem amarra e sem dependência de mim.</p>
+  <p><strong>As lojas quebram aplicativo parado.</strong> Android e iOS elevam exigências todo ano, e aplicativo que não acompanha é removido. Ofereço manutenção mensal por <strong>__VALOR_MANUTENCAO__ € por mês</strong>, cobrindo correção de defeito, atualização para novas exigências das plataformas e manutenção das fichas nas lojas. É contrato separado e opcional.</p>
+
+  <h2>Aceite</h2>
+  <p>A assinatura abaixo, ou a confirmação por e-mail desta proposta, vale como aceite do escopo, do prazo e do preço acima.</p>
+
+  <div class="assina">
+    <div>__CLIENTE__<br>Data:</div>
+    <div>Wagner Wrunski<br>Data:</div>
+  </div>
+
+  <footer>
+    Wagner Wrunski · sdwrunski@gmail.com · Dublin, Irlanda · wrunski.github.io
+  </footer>
+
+</div>
+</body>
+</html>
