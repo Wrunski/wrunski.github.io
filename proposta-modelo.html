@@ -9,11 +9,15 @@
 
   1. Duplique este arquivo com o nome do cliente:
        cp proposta-modelo.html proposta-2026-10-padaria-silva.html
-  2. Abra num editor de texto e substitua todos os marcadores __ASSIM__.
+  2. Abra num editor de texto e substitua os marcadores em maiúsculas,
+     cercados por dois sublinhados de cada lado.
   3. Apague as linhas de escopo que não se aplicam.
-  4. Confira que não sobrou marcador:
-       grep -n "__" proposta-<nome>.html
-     A saída correta é vazia.
+  4. Confira que não sobrou nenhum, buscando por dois sublinhados
+     seguidos no arquivo. A saída correta é vazia.
+
+     Este texto de instrução não cita o padrão literalmente, de
+     propósito: se citasse, a busca do passo 4 encontraria a própria
+     instrução para sempre e nunca ficaria limpa.
   5. Abra no navegador e imprima em PDF (Cmd+P → Salvar como PDF).
 
   Este arquivo é modelo. Nunca envie o modelo ao cliente.
