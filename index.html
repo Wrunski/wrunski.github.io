@@ -99,10 +99,13 @@
   ol.steps li:first-child { border-top:0; }
   ol.steps li::before {
     content:counter(s,decimal-leading-zero);
-    font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--faint); padding-top:3px;
+    grid-column:1; grid-row:1;
+    font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--faint); padding-top:4px;
   }
-  ol.steps b { font-weight:600; font-size:16.5px; }
-  ol.steps span { display:block; color:var(--muted); font-size:15px; margin-top:3px; }
+  /* título e descrição vivem os dois na segunda coluna — sem isto a
+     descrição cai para a linha de baixo, dentro da coluna do número */
+  ol.steps b { grid-column:2; font-weight:600; font-size:16.5px; }
+  ol.steps span { grid-column:2; color:var(--muted); font-size:15px; margin-top:3px; }
 
   .note { background:var(--accent-soft); border-radius:10px; padding:20px 24px; margin-top:26px; }
   .note p { margin:0; font-size:15.5px; }
