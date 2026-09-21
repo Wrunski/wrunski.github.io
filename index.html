@@ -79,6 +79,7 @@
   .app { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:38px; align-items:center; margin-top:28px; }
   @media (max-width:760px){ .app { grid-template-columns:1fr; } }
   .app .txt h3 { font-size:25px; margin-bottom:6px; }
+  .gloss { font-weight:600; font-size:.62em; color:var(--faint); letter-spacing:0; }
   .tagline { color:var(--faint); font-size:14px; margin:0 0 16px; }
   .shots { display:flex; gap:12px; }
   .shots img {
@@ -250,7 +251,7 @@
 
     <section id="work">
       <p class="eyebrow">Work</p>
-      <h2>Organizador de Finanças</h2>
+      <h2>Organizador de Finanças <span class="gloss">— personal finance tracker</span></h2>
       <div class="app">
         <div class="txt">
           <p class="tagline">Own product · Android and iOS · in closed testing on Google Play</p>
@@ -322,7 +323,7 @@
 
     <section id="trabajo">
       <p class="eyebrow">Trabajo</p>
-      <h2>Organizador de Finanças</h2>
+      <h2>Organizador de Finanças <span class="gloss">— control de gastos personales</span></h2>
       <div class="app">
         <div class="txt">
           <p class="tagline">Producto propio · Android e iOS · en pruebas cerradas en Google Play</p>
@@ -368,7 +369,7 @@
 
   <footer>
     <a class="mailto" href="mailto:sdwrunski@gmail.com">sdwrunski@gmail.com</a>
-    <p class="small">Dublin, Irlanda · Wagner Wrunski</p>
+    <p class="small"><span data-lang="pt" class="on">Dublin, Irlanda</span><span data-lang="en">Dublin, Ireland</span><span data-lang="es">Dublín, Irlanda</span> · Wagner Wrunski</p>
   </footer>
 </div>
 
@@ -383,6 +384,11 @@
       b.setAttribute('aria-pressed', String(b.getAttribute('data-set') === lang));
     });
     document.documentElement.lang = lang === 'en' ? 'en' : lang === 'es' ? 'es' : 'pt-BR';
+    document.title = {
+      pt: 'Wagner Wrunski — Aplicativos para Android e iOS',
+      en: 'Wagner Wrunski — Android and iOS apps',
+      es: 'Wagner Wrunski — Aplicaciones para Android e iOS'
+    }[lang];
     try { localStorage.setItem('lang', lang); } catch (e) {}
   }
   buttons.forEach(function (b) {
