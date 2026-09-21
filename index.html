@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wagner Wrunski — Aplicativos para Android e iOS</title>
+<meta name="description" content="Desenvolvo aplicativos móveis para Android e iOS, do primeiro desenho até publicado nas lojas. Preço fechado, escopo escrito.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+  :root {
+    --ground:#FAFAF7; --surface:#FFFFFF; --sunk:#F0F0EB;
+    --ink:#15181C; --muted:#5A6068; --faint:#8B929B; --line:#E2E2DC;
+    --accent:#1B4965; --accent-soft:#E4EDF3; --amber:#B4622A;
+    --shadow:0 1px 2px rgba(21,24,28,.05), 0 10px 30px rgba(21,24,28,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0F1215; --surface:#171B1F; --sunk:#1E2328;
+      --ink:#E8EAED; --muted:#99A1AA; --faint:#6F7881; --line:#282E34;
+      --accent:#6FB3D9; --accent-soft:#16262F; --amber:#E0965D;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0F1215; --surface:#171B1F; --sunk:#1E2328;
+    --ink:#E8EAED; --muted:#99A1AA; --faint:#6F7881; --line:#282E34;
+    --accent:#6FB3D9; --accent-soft:#16262F; --amber:#E0965D;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.3);
+  }
+
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3 { font-family:"Bricolage Grotesque", system-ui, sans-serif; margin:0; font-weight:800; letter-spacing:-.022em; text-wrap:balance; }
+  p { max-width:62ch; }
+  a { color:var(--accent); }
+  .mono { font-family:"IBM Plex Mono", monospace; font-size:.88em; }
+
+  .wrap { max-width:940px; margin:0 auto; padding:0 24px; }
+
+  /* topo */
+  .top { display:flex; align-items:center; gap:16px; padding:26px 0 0; }
+  .brand { font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:17px; letter-spacing:-.02em; }
+  .lang { margin-left:auto; display:flex; gap:4px; }
+  .lang button {
+    font:inherit; font-size:13px; font-weight:600; cursor:pointer;
+    background:none; border:1px solid var(--line); color:var(--muted);
+    padding:5px 11px; border-radius:6px;
+  }
+  .lang button[aria-pressed="true"] { background:var(--ink); color:var(--ground); border-color:var(--ink); }
+
+  header.hero { padding:56px 0 48px; }
+  header.hero h1 { font-size:clamp(34px,6.2vw,58px); line-height:1.03; }
+  header.hero .sub { font-size:clamp(18px,2.4vw,21px); color:var(--muted); margin:20px 0 0; max-width:56ch; }
+  .cta { display:flex; flex-wrap:wrap; gap:12px; margin-top:32px; }
+  .btn {
+    font-family:"Bricolage Grotesque",sans-serif; font-weight:600; font-size:15.5px;
+    text-decoration:none; padding:12px 22px; border-radius:8px; display:inline-block;
+  }
+  .btn.primary { background:var(--accent); color:var(--ground); }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn.primary { color:#0F1215; } }
+  :root[data-theme="dark"] .btn.primary { color:#0F1215; }
+  .btn.ghost { border:1px solid var(--line); color:var(--ink); }
+
+  section { padding:44px 0; border-top:1px solid var(--line); }
+  .eyebrow { font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 12px; }
+  section h2 { font-size:clamp(24px,3.4vw,32px); margin-bottom:14px; }
+
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin-top:26px; }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:22px; box-shadow:var(--shadow); }
+  .card h3 { font-size:17.5px; font-weight:600; font-family:"IBM Plex Sans",sans-serif; letter-spacing:-.005em; margin-bottom:8px; }
+  .card p { font-size:15px; color:var(--muted); margin:0; }
+
+  /* app */
+  .app { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:38px; align-items:center; margin-top:28px; }
+  @media (max-width:760px){ .app { grid-template-columns:1fr; } }
+  .app .txt h3 { font-size:25px; margin-bottom:6px; }
+  .tagline { color:var(--faint); font-size:14px; margin:0 0 16px; }
+  .shots { display:flex; gap:12px; }
+  .shots img {
+    width:100%; border-radius:12px; border:1px solid var(--line);
+    box-shadow:var(--shadow); display:block;
+  }
+  .shots figure { margin:0; flex:1 1 0; min-width:0; }
+  ul.ticks { list-style:none; padding:0; margin:16px 0 0; }
+  ul.ticks li { display:grid; grid-template-columns:20px 1fr; gap:10px; font-size:15.5px; padding:5px 0; }
+  ul.ticks .t { color:var(--accent); font-weight:700; }
+
+  /* processo */
+  ol.steps { list-style:none; counter-reset:s; padding:0; margin:26px 0 0; display:grid; gap:2px; }
+  ol.steps li {
+    counter-increment:s; display:grid; grid-template-columns:36px minmax(0,1fr);
+    gap:16px; padding:15px 0; border-top:1px solid var(--line); align-items:start;
+  }
+  ol.steps li:first-child { border-top:0; }
+  ol.steps li::before {
+    content:counter(s,decimal-leading-zero);
+    font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--faint); padding-top:3px;
+  }
+  ol.steps b { font-weight:600; font-size:16.5px; }
+  ol.steps span { display:block; color:var(--muted); font-size:15px; margin-top:3px; }
+
+  .note { background:var(--accent-soft); border-radius:10px; padding:20px 24px; margin-top:26px; }
+  .note p { margin:0; font-size:15.5px; }
+
+  footer { border-top:1px solid var(--line); padding:38px 0 60px; }
+  footer .mailto { font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:clamp(20px,3vw,27px); text-decoration:none; color:var(--ink); letter-spacing:-.02em; }
+  footer .mailto:hover { color:var(--accent); }
+  footer .small { color:var(--faint); font-size:13.5px; margin-top:26px; }
+
+  [data-lang] { display:none; }
+  [data-lang].on { display:block; }
+  li[data-lang].on, span[data-lang].on { display:revert; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <span class="brand">Wagner Wrunski</span>
+    <div class="lang">
+      <button type="button" data-set="pt" aria-pressed="true">PT</button>
+      <button type="button" data-set="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+
+  <!-- ============ PT ============ -->
+  <div data-lang="pt" class="on">
+
+    <header class="hero">
+      <h1>Aplicativos para Android e&nbsp;iOS, do desenho até publicado&nbsp;na&nbsp;loja.</h1>
+      <p class="sub">Escrever o aplicativo é metade do trabalho. A outra metade é assinatura, ícone, política de privacidade, declaração de dados e o processo de teste que as lojas exigem — e é aí que a maioria dos projetos trava.</p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:sdwrunski@gmail.com?subject=Projeto%20de%20aplicativo">Conversar sobre um projeto</a>
+        <a class="btn ghost" href="#trabalho">Ver o trabalho</a>
+      </div>
+    </header>
+
+    <section>
+      <p class="eyebrow">O que entrego</p>
+      <h2>Um aplicativo funcionando no celular das pessoas</h2>
+      <p>Preço fechado e escopo escrito antes de começar. Sem cobrança por hora e sem projeto que não acaba.</p>
+      <div class="cards">
+        <div class="card">
+          <h3>Android e iOS de uma vez</h3>
+          <p>Uma base de código para as duas plataformas, com aparência nativa em cada uma.</p>
+        </div>
+        <div class="card">
+          <h3>Publicado, não entregue em pasta</h3>
+          <p>Levo até estar na Google Play e na App Store, incluindo o processo de teste que as lojas exigem hoje.</p>
+        </div>
+        <div class="card">
+          <h3>Três idiomas desde o começo</h3>
+          <p>Português, inglês e espanhol, com tema claro e escuro e acessibilidade para leitor de tela.</p>
+        </div>
+        <div class="card">
+          <h3>Privacidade levada a sério</h3>
+          <p>Política de privacidade, declaração de coleta de dados e monitoramento de erro que não envia dado do usuário.</p>
+        </div>
+        <div class="card">
+          <h3>Testado antes, não depois</h3>
+          <p>Testes automatizados no que importa, e uma varredura manual documentada antes de qualquer publicação.</p>
+        </div>
+        <div class="card">
+          <h3>O código é seu</h3>
+          <p>Entrego o repositório com a documentação das decisões. Sem amarra e sem dependência de mim.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="trabalho">
+      <p class="eyebrow">Trabalho</p>
+      <h2>Organizador de Finanças</h2>
+      <div class="app">
+        <div class="txt">
+          <p class="tagline">Aplicativo próprio · Android e iOS · em teste fechado na Google Play</p>
+          <p>Controle de gastos e contas do mês, com orçamento, metas, conversor de moedas e relatórios. Nenhum lançamento sai do aparelho — não há conta, login nem servidor.</p>
+          <ul class="ticks">
+            <li><span class="t">→</span><span>Sete versões publicadas, cada uma com varredura de QA documentada</span></li>
+            <li><span class="t">→</span><span>217 testes automatizados</span></li>
+            <li><span class="t">→</span><span>Três idiomas, tema claro e escuro, leitor de tela</span></li>
+            <li><span class="t">→</span><span>Backup e restauração com validação total antes de escrever</span></li>
+          </ul>
+        </div>
+        <div class="shots">
+          <figure><img src="img/organizador-lancamentos.png" alt="Tela de lançamentos do Organizador de Finanças, mostrando receitas, despesas e saldo do mês"></figure>
+          <figure><img src="img/organizador-relatorios.png" alt="Tela de relatórios do Organizador de Finanças"></figure>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="eyebrow">Como funciona</p>
+      <h2>Do primeiro contato ao aplicativo na loja</h2>
+      <ol class="steps">
+        <li><b>Conversa e escopo</b><span>Entendo o que o aplicativo precisa fazer e escrevo o que está dentro e o que está fora. Você aprova antes de qualquer código.</span></li>
+        <li><b>Proposta com preço fechado</b><span>Uma página: escopo, prazo, preço e forma de pagamento. Metade na assinatura, metade na entrega.</span></li>
+        <li><b>Construção, com você vendo</b><span>Acompanhamento do que já está pronto e do que falta, sem precisar perguntar.</span></li>
+        <li><b>Teste antes de publicar</b><span>Varredura manual documentada e testes automatizados. Defeito encontrado aqui custa minutos; encontrado pelo seu cliente, custa a avaliação na loja.</span></li>
+        <li><b>Publicação nas duas lojas</b><span>Contas, assinatura, ícones, textos, política de privacidade, declaração de dados e o processo de teste exigido.</span></li>
+        <li><b>Entrega e manutenção</b><span>Código e documentação são seus. Manutenção mensal é contrato separado, e eu explico por que ela costuma ser necessária.</span></li>
+      </ol>
+      <div class="note">
+        <p><strong>Uma coisa que quase ninguém conta antes:</strong> as lojas quebram aplicativo parado. Android e iOS elevam exigências todo ano, e aplicativo que não acompanha sai do ar. Isso entra na conversa desde o começo, não como surpresa dois anos depois.</p>
+      </div>
+    </section>
+
+    <section>
+      <p class="eyebrow">Quem sou</p>
+      <h2>Wagner Wrunski</h2>
+      <p>Trabalho com qualidade de software e automação de testes, e desenvolvo aplicativos móveis. Moro em Dublin, na Irlanda, e atendo em português, inglês e espanhol.</p>
+      <p>Minha formação é em testar software — o que muda o que eu construo. Escrevo a tela pensando no que vai quebrar nela, não só em como ela aparece.</p>
+    </section>
+
+  </div>
+
+  <!-- ============ EN ============ -->
+  <div data-lang="en">
+
+    <header class="hero">
+      <h1>Android and iOS apps, from first sketch to live on the&nbsp;store.</h1>
+      <p class="sub">Writing the app is half the work. The other half is signing, icons, privacy policy, data safety declarations and the testing process the stores now require — and that is where most projects stall.</p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:sdwrunski@gmail.com?subject=App%20project">Talk about a project</a>
+        <a class="btn ghost" href="#work">See the work</a>
+      </div>
+    </header>
+
+    <section>
+      <p class="eyebrow">What you get</p>
+      <h2>An app running on real phones</h2>
+      <p>Fixed price and written scope before anything starts. No hourly billing, and no project that never ends.</p>
+      <div class="cards">
+        <div class="card"><h3>Android and iOS together</h3><p>One codebase for both platforms, looking native on each.</p></div>
+        <div class="card"><h3>Published, not handed over in a folder</h3><p>I take it all the way to Google Play and the App Store, including the testing process the stores require today.</p></div>
+        <div class="card"><h3>Three languages from day one</h3><p>Portuguese, English and Spanish, with light and dark themes and screen-reader accessibility.</p></div>
+        <div class="card"><h3>Privacy taken seriously</h3><p>Privacy policy, data safety declaration, and error monitoring that sends none of your users' data.</p></div>
+        <div class="card"><h3>Tested before, not after</h3><p>Automated tests where they matter, plus a documented manual sweep before any release.</p></div>
+        <div class="card"><h3>The code is yours</h3><p>You get the repository and the written record of every decision. No lock-in, no dependency on me.</p></div>
+      </div>
+    </section>
+
+    <section id="work">
+      <p class="eyebrow">Work</p>
+      <h2>Organizador de Finanças</h2>
+      <div class="app">
+        <div class="txt">
+          <p class="tagline">Own product · Android and iOS · in closed testing on Google Play</p>
+          <p>Monthly expense and bill tracking, with budgeting, goals, a currency converter and reports. Nothing the user enters ever leaves their phone — there is no account, no login and no server.</p>
+          <ul class="ticks">
+            <li><span class="t">→</span><span>Seven released versions, each with a documented QA sweep</span></li>
+            <li><span class="t">→</span><span>217 automated tests</span></li>
+            <li><span class="t">→</span><span>Three languages, light and dark themes, screen reader support</span></li>
+            <li><span class="t">→</span><span>Backup and restore validated in full before anything is written</span></li>
+          </ul>
+        </div>
+        <div class="shots">
+          <figure><img src="img/organizador-lancamentos.png" alt="Main screen of Organizador de Finanças showing income, expenses and monthly balance"></figure>
+          <figure><img src="img/organizador-relatorios.png" alt="Reports screen of Organizador de Finanças"></figure>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="eyebrow">How it works</p>
+      <h2>From first conversation to app on the store</h2>
+      <ol class="steps">
+        <li><b>Conversation and scope</b><span>I work out what the app needs to do and write down what is in and what is out. You approve it before any code exists.</span></li>
+        <li><b>Fixed-price proposal</b><span>One page: scope, timeline, price and payment terms. Half on signature, half on delivery.</span></li>
+        <li><b>Build, with you watching</b><span>A running view of what is done and what is left, without having to ask.</span></li>
+        <li><b>Testing before release</b><span>A documented manual sweep plus automated tests. A defect found here costs minutes; found by your customer, it costs your store rating.</span></li>
+        <li><b>Publishing on both stores</b><span>Accounts, signing, icons, listings, privacy policy, data safety declaration and the required testing process.</span></li>
+        <li><b>Handover and maintenance</b><span>Code and documentation are yours. Monthly maintenance is a separate contract, and I explain why it is usually needed.</span></li>
+      </ol>
+      <div class="note">
+        <p><strong>Something almost nobody mentions upfront:</strong> the stores break apps that sit still. Android and iOS raise their minimum requirements every year, and an app that does not keep up gets removed. That is part of the conversation from the start, not a surprise two years later.</p>
+      </div>
+    </section>
+
+    <section>
+      <p class="eyebrow">About</p>
+      <h2>Wagner Wrunski</h2>
+      <p>I work in software quality and test automation, and I build mobile apps. I am based in Dublin, Ireland, and work in Portuguese, English and Spanish.</p>
+      <p>My background is in testing software — which changes what I build. I write a screen thinking about what will break in it, not only how it looks.</p>
+    </section>
+
+  </div>
+
+  <footer>
+    <a class="mailto" href="mailto:sdwrunski@gmail.com">sdwrunski@gmail.com</a>
+    <p class="small">Dublin, Irlanda · Wagner Wrunski</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var buttons = document.querySelectorAll('.lang button');
+  function set(lang) {
+    document.querySelectorAll('[data-lang]').forEach(function (el) {
+      el.classList.toggle('on', el.getAttribute('data-lang') === lang);
+    });
+    buttons.forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-set') === lang));
+    });
+    document.documentElement.lang = lang === 'en' ? 'en' : 'pt-BR';
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () { set(b.getAttribute('data-set')); });
+  });
+  var saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  if (saved === 'en' || (saved === null && !/^pt/i.test(navigator.language || ''))) set('en');
+})();
+</script>
+</body>
+</html>
