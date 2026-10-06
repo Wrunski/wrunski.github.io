@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Teste os meus apps · Wagner Wrunski</title>
+<meta name="description" content="Obrigado por ajudar! Os dois apps são de graça, sem anúncios e sem conta. Escolha o app e o seu celular.">
+<link rel="canonical" href="https://wrunski.github.io/testes/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://wrunski.github.io/testes/">
+<meta property="og:site_name" content="Wagner Wrunski">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Teste os meus apps">
+<meta property="og:description" content="Obrigado por ajudar! Os dois apps são de graça, sem anúncios e sem conta. Escolha o app e o seu celular.">
+<meta property="og:image" content="https://wrunski.github.io/img/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Wagner Wrunski, analista de QA em Dublin. Testes de API, SQL, regressão e QA com apoio de IA. Aberto a vagas de QA e automação de testes.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Teste os meus apps">
+<meta name="twitter:description" content="Obrigado por ajudar! Os dois apps são de graça, sem anúncios e sem conta. Escolha o app e o seu celular.">
+<meta name="twitter:image" content="https://wrunski.github.io/img/og-card.png">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+  /* Cores, fontes e espaçamentos copiados do index.html do site. */
+  :root {
+    --ground:#FAFAF7; --surface:#FFFFFF; --sunk:#F0F0EB;
+    --ink:#15181C; --muted:#5A6068; --faint:#8B929B; --line:#E2E2DC;
+    --accent:#1B4965; --accent-soft:#E4EDF3; --amber:#B4622A;
+    --shadow:0 1px 2px rgba(21,24,28,.05), 0 10px 30px rgba(21,24,28,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0F1215; --surface:#171B1F; --sunk:#1E2328;
+      --ink:#E8EAED; --muted:#99A1AA; --faint:#6F7881; --line:#282E34;
+      --accent:#6FB3D9; --accent-soft:#16262F; --amber:#E0965D;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0F1215; --surface:#171B1F; --sunk:#1E2328;
+    --ink:#E8EAED; --muted:#99A1AA; --faint:#6F7881; --line:#282E34;
+    --accent:#6FB3D9; --accent-soft:#16262F; --amber:#E0965D;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.3);
+  }
+
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
+    overflow-wrap:break-word;
+  }
+  h1,h2,h3 { font-family:"Bricolage Grotesque", system-ui, sans-serif; margin:0; font-weight:800; letter-spacing:-.022em; text-wrap:balance; }
+  p { max-width:62ch; }
+  a { color:var(--accent); }
+  a:focus-visible, button:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+
+  .wrap { max-width:940px; margin:0 auto; padding:0 24px; }
+
+  /* topo */
+  .top { display:flex; align-items:center; gap:16px; padding:26px 0 0; }
+  .brand { font-family:"Bricolage Grotesque",sans-serif; font-weight:800; font-size:17px; letter-spacing:-.02em; color:var(--ink); text-decoration:none; }
+  .lang { margin-left:auto; display:flex; gap:4px; }
+  .lang button {
+    font:inherit; font-size:13px; font-weight:600; cursor:pointer;
+    background:none; border:1px solid var(--line); color:var(--muted);
+    padding:5px 11px; border-radius:6px;
+  }
+  .lang button[aria-pressed="true"] { background:var(--ink); color:var(--ground); border-color:var(--ink); }
+
+  header.hero { padding:56px 0 48px; }
+  header.hero h1 { font-size:clamp(34px,6.2vw,58px); line-height:1.03; }
+  header.hero .sub { font-size:clamp(18px,2.4vw,21px); color:var(--muted); margin:20px 0 0; max-width:56ch; }
+
+  .btn {
+    font-family:"Bricolage Grotesque",sans-serif; font-weight:600; font-size:15.5px;
+    text-decoration:none; padding:12px 22px; border-radius:8px; display:inline-block;
+  }
+  .btn.primary { background:var(--accent); color:var(--ground); }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn.primary { color:#0F1215; } }
+  :root[data-theme="dark"] .btn.primary { color:#0F1215; }
+
+  section { padding:44px 0; border-top:1px solid var(--line); }
+  section h2 { font-size:clamp(24px,3.4vw,32px); margin-bottom:14px; }
+  section > p { margin:0; }
+  .lead { color:var(--muted); }
+
+  /* um cartão por celular */
+  .plats { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:16px; margin-top:24px; align-items:start; }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:22px; box-shadow:var(--shadow); }
+  .card h3 { font-size:22px; margin-bottom:14px; }
+  .card p { margin:0; font-size:16px; }
+  .card b { font-weight:600; white-space:nowrap; }
+  .card .btn { display:block; text-align:center; margin-top:14px; padding:12px 16px; text-wrap:balance; }
+  .card.soon { background:transparent; box-shadow:none; border-style:dashed; }
+  .card.soon p { color:var(--muted); }
+
+  /* os passos do Android */
+  ol.how { list-style:none; counter-reset:passo; padding:0; margin:0; }
+  ol.how > li { counter-increment:passo; display:grid; grid-template-columns:30px minmax(0,1fr); column-gap:12px; align-items:start; }
+  ol.how > li + li { margin-top:20px; padding-top:20px; border-top:1px solid var(--line); }
+  ol.how > li::before {
+    content:counter(passo); grid-column:1; grid-row:1;
+    width:30px; height:30px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--accent-soft); color:var(--accent);
+    font-family:"IBM Plex Mono",monospace; font-size:14px;
+  }
+  ol.how p { grid-column:2; grid-row:1; padding-top:2px; }
+  ol.how .btn { grid-column:1 / -1; }
+
+  .card p.fine { margin-top:18px; padding:12px 14px; border-radius:8px; background:var(--accent-soft); font-size:14.5px; line-height:1.5; max-width:none; }
+
+  ul.ticks { list-style:none; padding:0; margin:0; }
+  ul.ticks li { display:grid; grid-template-columns:20px minmax(0,1fr); gap:10px; padding:5px 0; }
+  ul.ticks .t { color:var(--accent); font-weight:700; }
+
+  footer { border-top:1px solid var(--line); padding:32px 0 56px; }
+  footer .back { font-family:"Bricolage Grotesque",sans-serif; font-weight:600; font-size:16px; color:var(--ink); text-decoration:none; }
+  footer .back:hover { color:var(--accent); }
+
+  [data-lang] { display:none; }
+  [data-lang].on { display:block; }
+  li[data-lang].on, span[data-lang].on { display:revert; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="https://wrunski.github.io/">Wagner Wrunski</a>
+    <div class="lang" role="group" aria-label="Idioma">
+      <button type="button" data-set="pt" aria-pressed="true">PT</button>
+      <button type="button" data-set="en" aria-pressed="false">EN</button>
+      <button type="button" data-set="es" aria-pressed="false">ES</button>
+    </div>
+  </div>
+
+  <main>
+
+  <!-- ============ PT ============ -->
+  <div data-lang="pt" lang="pt-BR" class="on">
+
+    <header class="hero">
+      <h1>Teste os meus apps</h1>
+      <p class="sub">Obrigado por ajudar! Os dois apps são de graça, sem anúncios e sem conta. Escolha o app e o seu celular.</p>
+    </header>
+
+    <section>
+      <h2>Tem na Geladeira</h2>
+      <p class="lead">Receitas com o que você tem em casa: marque a despensa, e ele mostra o que dá para cozinhar entre 300 receitas.</p>
+      <div class="plats">
+        <div class="card">
+          <h3>Android</h3>
+          <ol class="how">
+            <li>
+              <p>Entre no grupo dos testadores, com o Gmail do seu celular. Na página do grupo, toque em <b>Participar do grupo</b>.</p>
+              <a class="btn primary" href="https://groups.google.com/g/testadores-temnageladeira" target="_blank" rel="noopener">Abrir o grupo dos testadores</a>
+            </li>
+            <li>
+              <p>No celular, abra o teste com o mesmo Gmail, toque em <b>Tornar-se testador</b> e baixe o app na Google Play.</p>
+              <a class="btn primary" href="https://play.google.com/apps/testing/com.wrunski.temnageladeira" target="_blank" rel="noopener">Abrir o teste na Google Play</a>
+            </li>
+          </ol>
+          <p class="fine">Disponível no Brasil, em Portugal e na Irlanda. Fique no teste por pelo menos 14 dias, por favor: é a regra da Google para o app chegar à loja.</p>
+        </div>
+        <div class="card">
+          <h3>iPhone</h3>
+          <p>Instale o app TestFlight, da Apple, e abra o convite.</p>
+          <a class="btn primary" href="https://testflight.apple.com/join/Fu2w18C3" target="_blank" rel="noopener">Abrir o convite no TestFlight</a>
+          <p class="fine">O convite abre assim que a Apple aprovar a versão de teste.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Organizador de Finanças</h2>
+      <p class="lead">O orçamento do mês e os gastos do dia a dia, sem conta, e funciona sem internet.</p>
+      <div class="plats">
+        <div class="card">
+          <h3>iPhone</h3>
+          <p>Instale o app TestFlight e abra o convite.</p>
+          <a class="btn primary" href="https://testflight.apple.com/join/dbTb9gV7" target="_blank" rel="noopener">Abrir o convite no TestFlight</a>
+        </div>
+        <div class="card soon">
+          <h3>Android</h3>
+          <p>Em breve na Google Play.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Privacidade</h2>
+      <ul class="ticks">
+        <li><span class="t" aria-hidden="true">→</span><a href="https://wrunski.github.io/politicas/tem-na-geladeira.html">Política de privacidade do Tem na Geladeira</a></li>
+        <li><span class="t" aria-hidden="true">→</span><a href="https://wrunski.github.io/politicas/organizador-financas.html">Política de privacidade do Organizador de Finanças</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Achou algo estranho ou tem uma ideia?</h2>
+      <p>Mande pelo próprio TestFlight ou pela Google Play, ou escreva para <a href="mailto:sdwrunski@gmail.com">sdwrunski@gmail.com</a>.</p>
+    </section>
+
+  </div>
+
+  <!-- ============ EN ============ -->
+  <div data-lang="en" lang="en">
+
+    <header class="hero">
+      <h1>Test my apps</h1>
+      <p class="sub">Thanks for helping! Both apps are free, with no ads and no account. Pick the app and your phone.</p>
+    </header>
+
+    <section>
+      <h2>Tem na Geladeira</h2>
+      <p class="lead">Recipes from what you have at home: check off what’s in your pantry, and it shows what you can cook out of 300 recipes.</p>
+      <div class="plats">
+        <div class="card">
+          <h3>Android</h3>
+          <ol class="how">
+            <li>
+              <p>Join the testers group with the Gmail account on your phone. On the group page, tap <b>Join group</b>.</p>
+              <a class="btn primary" href="https://groups.google.com/g/testadores-temnageladeira" target="_blank" rel="noopener">Open the testers group</a>
+            </li>
+            <li>
+              <p>On your phone, open the test with the same Gmail account, tap <b>Become a tester</b> and download the app from Google Play.</p>
+              <a class="btn primary" href="https://play.google.com/apps/testing/com.wrunski.temnageladeira" target="_blank" rel="noopener">Open the test on Google Play</a>
+            </li>
+          </ol>
+          <p class="fine">Available in Brazil, Portugal and Ireland. Please stay in the test for at least 14 days: that’s Google’s rule for the app to reach the store.</p>
+        </div>
+        <div class="card">
+          <h3>iPhone</h3>
+          <p>Install Apple’s TestFlight app, then open the invite.</p>
+          <a class="btn primary" href="https://testflight.apple.com/join/Fu2w18C3" target="_blank" rel="noopener">Open the invite in TestFlight</a>
+          <p class="fine">The invite opens as soon as Apple approves the test version.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Organizador de Finanças</h2>
+      <p class="lead">Your monthly budget and day-to-day spending, with no account and no internet needed.</p>
+      <div class="plats">
+        <div class="card">
+          <h3>iPhone</h3>
+          <p>Install the TestFlight app, then open the invite.</p>
+          <a class="btn primary" href="https://testflight.apple.com/join/dbTb9gV7" target="_blank" rel="noopener">Open the invite in TestFlight</a>
+        </div>
+        <div class="card soon">
+          <h3>Android</h3>
+          <p>Coming soon to Google Play.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Privacy</h2>
+      <ul class="ticks">
+        <li><span class="t" aria-hidden="true">→</span><a href="https://wrunski.github.io/politicas/tem-na-geladeira.html#english">Tem na Geladeira privacy policy</a></li>
+        <li><span class="t" aria-hidden="true">→</span><a href="https://wrunski.github.io/politicas/organizador-financas.html#english">Organizador de Finanças privacy policy</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Found something odd, or have an idea?</h2>
+      <p>Send it right from TestFlight or Google Play, or write to <a href="mailto:sdwrunski@gmail.com">sdwrunski@gmail.com</a>.</p>
+    </section>
+
+  </div>
+
+  <!-- ============ ES ============ -->
+  <div data-lang="es" lang="es">
+
+    <header class="hero">
+      <h1>Prueba mis apps</h1>
+      <p class="sub">¡Gracias por ayudar! Las dos apps son gratis, sin anuncios y sin cuenta. Elige la app y tu móvil.</p>
+    </header>
+
+    <section>
+      <h2>Tem na Geladeira</h2>
+      <p class="lead">Recetas con lo que tienes en casa: marca lo que hay en tu despensa y te muestra lo que puedes cocinar entre 300 recetas.</p>
+      <div class="plats">
+        <div class="card">
+          <h3>Android</h3>
+          <ol class="how">
+            <li>
+              <p>Únete al grupo de testers con la cuenta de Gmail de tu móvil. En la página del grupo, toca <b>Unirse al grupo</b>.</p>
+              <a class="btn primary" href="https://groups.google.com/g/testadores-temnageladeira" target="_blank" rel="noopener">Abrir el grupo de testers</a>
+            </li>
+            <li>
+              <p>En el móvil, abre la prueba con la misma cuenta de Gmail, toca el botón para ser tester y descarga la app desde Google Play.</p>
+              <a class="btn primary" href="https://play.google.com/apps/testing/com.wrunski.temnageladeira" target="_blank" rel="noopener">Abrir la prueba en Google Play</a>
+            </li>
+          </ol>
+          <p class="fine">Disponible en Brasil, Portugal e Irlanda. Quédate en la prueba al menos 14 días, por favor: es la regla de Google para que la app llegue a la tienda.</p>
+        </div>
+        <div class="card">
+          <h3>iPhone</h3>
+          <p>Instala la app TestFlight, de Apple, y luego abre la invitación.</p>
+          <a class="btn primary" href="https://testflight.apple.com/join/Fu2w18C3" target="_blank" rel="noopener">Abrir la invitación en TestFlight</a>
+          <p class="fine">La invitación se abre en cuanto Apple apruebe la versión de prueba.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Organizador de Finanças</h2>
+      <p class="lead">El presupuesto del mes y los gastos del día a día, sin cuenta, y funciona sin internet.</p>
+      <div class="plats">
+        <div class="card">
+          <h3>iPhone</h3>
+          <p>Instala la app TestFlight y luego abre la invitación.</p>
+          <a class="btn primary" href="https://testflight.apple.com/join/dbTb9gV7" target="_blank" rel="noopener">Abrir la invitación en TestFlight</a>
+        </div>
+        <div class="card soon">
+          <h3>Android</h3>
+          <p>Próximamente en Google Play.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Privacidad</h2>
+      <ul class="ticks">
+        <li><span class="t" aria-hidden="true">→</span><a href="https://wrunski.github.io/politicas/tem-na-geladeira.html#espanol">Política de privacidad de Tem na Geladeira</a></li>
+        <li><span class="t" aria-hidden="true">→</span><a href="https://wrunski.github.io/politicas/organizador-financas.html#espanol">Política de privacidad de Organizador de Finanças</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>¿Encontraste algo raro o tienes una idea?</h2>
+      <p>Envíalo desde el propio TestFlight o desde Google Play, o escribe a <a href="mailto:sdwrunski@gmail.com">sdwrunski@gmail.com</a>.</p>
+    </section>
+
+  </div>
+
+  </main>
+
+  <footer>
+    <a class="back" href="https://wrunski.github.io/"><span aria-hidden="true">← </span><span data-lang="pt" class="on">Voltar para wrunski.github.io</span><span data-lang="en">Back to wrunski.github.io</span><span data-lang="es">Volver a wrunski.github.io</span></a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var buttons = document.querySelectorAll('.lang button');
+  var group = document.querySelector('.lang');
+  function set(lang) {
+    document.querySelectorAll('[data-lang]').forEach(function (el) {
+      el.classList.toggle('on', el.getAttribute('data-lang') === lang);
+    });
+    buttons.forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-set') === lang));
+    });
+    document.documentElement.lang = lang === 'en' ? 'en' : lang === 'es' ? 'es' : 'pt-BR';
+    document.title = {
+      pt: 'Teste os meus apps · Wagner Wrunski',
+      en: 'Test my apps · Wagner Wrunski',
+      es: 'Prueba mis apps · Wagner Wrunski'
+    }[lang];
+    group.setAttribute('aria-label', { pt: 'Idioma', en: 'Language', es: 'Idioma' }[lang]);
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () { set(b.getAttribute('data-set')); });
+  });
+
+  var saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+
+  // Como no index.html: a escolha já feita (no site ou aqui) ganha do
+  // idioma do navegador. Sem escolha, o navegador decide, e o português
+  // fica ligado de saída.
+  if (saved === 'pt' || saved === 'en' || saved === 'es') {
+    set(saved);
+  } else {
+    var nav = (navigator.language || '').toLowerCase();
+    if (/^es/.test(nav)) set('es');
+    else if (!/^pt/.test(nav)) set('en');
+  }
+})();
+</script>
+</body>
+</html>
