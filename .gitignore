@@ -1,3 +1,8 @@
 .DS_Store
 proposta-2*.html
 apresentacao-*.html
+
+# Testes Playwright (tests/)
+tests/node_modules/
+tests/test-results/
+tests/playwright-report/

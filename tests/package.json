@@ -1,0 +1,16 @@
+{
+  "name": "wrunski-site-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testes Playwright do site wrunski.github.io: páginas, links, idiomas, celular, tema escuro, âncoras, CSP e acessibilidade.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "test": "playwright test",
+    "test:list": "playwright test --list",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0"
+  }
+}

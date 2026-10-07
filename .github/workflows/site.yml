@@ -1,0 +1,55 @@
+# Testes Playwright do site (tests/), em todo push e pull request.
+# Segurança (decisão S10 do PLANO-SITE.md): o token só lê o repositório,
+# as actions vão fixadas pelo SHA do commit (a versão vai no comentário),
+# nenhum segredo entra no fluxo, o Node e o Playwright são versões exatas
+# (o Playwright, no tests/package.json) e só o Chromium é instalado.
+name: Testes do site
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    name: Playwright (Chromium)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: tests
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Node 24.21.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.21.0
+          cache: npm
+          cache-dependency-path: tests/package-lock.json
+
+      - name: Instalar as dependências (versões do package-lock.json)
+        run: npm ci
+
+      - name: Instalar só o Chromium do Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Rodar os testes
+        run: npx playwright test
+
+      - name: Guardar o relatório quando falha
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: relatorio-playwright
+          path: tests/playwright-report/
+          retention-days: 7
