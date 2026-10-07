@@ -377,7 +377,7 @@ html[data-lang="es"] [data-lang]:not([data-lang="es"]) { display: none !importan
   margin-top: clamp(40px, 6vw, 64px); text-align: left;
 }
 .three svg { display: block; width: 30px; height: 30px; color: var(--link); margin-bottom: 16px; }
-.three h3 { font-size: 21px; font-weight: 600; letter-spacing: -.01em; line-height: 1.2; }
+.three h2, .three h3 { font-size: 21px; font-weight: 600; letter-spacing: -.01em; line-height: 1.2; }
 .three p { margin-top: 10px; color: var(--ink-2); font-size: 17px; }
 @media (max-width: 739px) { .three { grid-template-columns: 1fr; gap: 32px; } }
 .policy {
@@ -528,4 +528,32 @@ html[data-lang="es"] [data-lang]:not([data-lang="es"]) { display: none !importan
 @media (prefers-reduced-motion: reduce) {
   .js .reveal { opacity: 1; transform: none; transition: none; }
   .nav-toggle span { transition: none; }
+}
+
+/* O atraso de cada bloco na entrada suave vem de data-d="1" a "8" no HTML
+   (um atributo, e não style="--d: n", porque a Content-Security-Policy do
+   site não permite estilo inline). */
+[data-d="1"] { --d: 1; }
+[data-d="2"] { --d: 2; }
+[data-d="3"] { --d: 3; }
+[data-d="4"] { --d: 4; }
+[data-d="5"] { --d: 5; }
+[data-d="6"] { --d: 6; }
+[data-d="7"] { --d: 7; }
+[data-d="8"] { --d: 8; }
+
+/* ---------- O aviso "em desenvolvimento" (S9) ----------
+   Um selo pequeno e discreto, no visual da etiqueta "A caminho", para a
+   seção ou a página que ainda não está completa. Vai logo acima do título:
+   <p class="wip"><span data-lang="pt">Em desenvolvimento</span><span data-lang="en">In development</span><span data-lang="es">En desarrollo</span></p>
+   Em 07/10, ao ir ao ar, nenhuma seção precisou dele. */
+.wip {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-bottom: 18px; padding: 5px 11px 5px 9px;
+  border-radius: 999px; background: var(--seg); color: var(--seg-ink);
+  font-size: 12px; font-weight: 600; line-height: 1.2; white-space: nowrap;
+}
+.wip::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%;
+  border: 1.5px solid currentColor;
 }
