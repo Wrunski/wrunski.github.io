@@ -13,6 +13,10 @@ async function esperarIdioma(page: Page, idioma: Idioma) {
   const titulo = await html.getAttribute(`data-title-${idioma}`);
   if (titulo) await expect(page).toHaveTitle(titulo);
   else await expect(page).toHaveTitle(/· Wagner Wrunski$/);
+  // A descrição da página (meta description) acompanha o idioma, como o
+  // título: cada página traz as três em data-desc-xx.
+  const descricao = page.locator('meta[name="description"]');
+  await expect(descricao).toHaveAttribute('content', (await descricao.getAttribute(`data-desc-${idioma}`))!);
   for (const outro of IDIOMAS) {
     await expect(page.locator(`.lang button[data-set="${outro}"]`)).toHaveAttribute(
       'aria-pressed',

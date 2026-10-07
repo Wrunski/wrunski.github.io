@@ -7,8 +7,9 @@
       do navegador; sem escolha, espanhol vira "es", português vira "pt" e
       o resto vira "en". O resultado vai em <html data-lang>, e o CSS mostra
       só os blocos [data-lang] do idioma ativo. Os botões [data-set] trocam
-      e salvam; <html data-title-xx> dá o título de cada idioma;
-      data-alt-xx e data-label-xx trocam o alt das imagens e os aria-label.
+      e salvam; <html data-title-xx> dá o título de cada idioma, e a
+      <meta name="description" data-desc-xx> dá a descrição; data-alt-xx e
+      data-label-xx trocam o alt das imagens e os aria-label.
    2. O menu do celular (.nav-toggle abre e fecha .nav-links).
    3. A entrada suave ao rolar (.reveal ganha .is-in ao entrar na tela),
       com IntersectionObserver e sem nada se mexer em "reduzir movimento".
@@ -47,6 +48,9 @@
     root.lang = HTML_LANG[lang];
     var title = root.getAttribute('data-title-' + lang);
     if (title) document.title = title;
+    each('meta[name="description"][data-desc-' + lang + ']', function (el) {
+      el.setAttribute('content', el.getAttribute('data-desc-' + lang));
+    });
     each('[data-alt-' + lang + ']', function (el) {
       el.setAttribute('alt', el.getAttribute('data-alt-' + lang));
     });
