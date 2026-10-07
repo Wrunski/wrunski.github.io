@@ -8,9 +8,11 @@ async function esperarIdioma(page: Page, idioma: Idioma) {
   const html = page.locator('html');
   await expect(html).toHaveAttribute('data-lang', idioma);
   await expect(html).toHaveAttribute('lang', HTML_LANG[idioma]);
+  // O título da aba muda nas páginas que o traduzem (data-title-xx); nas
+  // páginas dos apps ele é o nome do app, igual nos três idiomas.
   const titulo = await html.getAttribute(`data-title-${idioma}`);
-  expect(titulo, `a página tem título em ${idioma}`).toBeTruthy();
-  await expect(page).toHaveTitle(titulo!);
+  if (titulo) await expect(page).toHaveTitle(titulo);
+  else await expect(page).toHaveTitle(/· Wagner Wrunski$/);
   for (const outro of IDIOMAS) {
     await expect(page.locator(`.lang button[data-set="${outro}"]`)).toHaveAttribute(
       'aria-pressed',

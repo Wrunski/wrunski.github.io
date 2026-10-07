@@ -12,9 +12,14 @@ const REPROVAM = new Set(['serious', 'critical']);
 
 for (const pagina of PAGINAS) {
   test(`${pagina.nome} não tem violação séria ou crítica de acessibilidade`, async ({ page }, info) => {
-    await page.emulateMedia({ colorScheme: 'light' });
+    // Sem a animação de entrada (prefers-reduced-motion): com ela, o axe
+    // mede o contraste no meio do esmaecimento e acusa um contraste que
+    // não existe; sem ela, todo o conteúdo da página está à mostra e é lido.
+    await page.emulateMedia({ colorScheme: 'light', reducedMotion: 'reduce' });
     await page.goto(pagina.caminho);
     await page.evaluate(() => document.fonts.ready);
+    await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)));
+    expect(await page.locator('.reveal:not(.is-in)').count(), 'nenhum bloco ficou escondido').toBe(0);
 
     const resultado = await new AxeBuilder({ page }).withTags(TAGS).analyze();
 
