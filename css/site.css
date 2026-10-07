@@ -239,6 +239,10 @@ html[data-lang="es"] [data-lang]:not([data-lang="es"]) { display: none !importan
   max-width: 38em; margin: 18px auto 0;
   text-wrap: pretty;
 }
+/* Link no meio do parágrafo (o e-mail da /testes/): sublinhado, para não
+   depender só da cor (WCAG 1.4.1; o verde e o cinza do texto têm quase o
+   mesmo contraste, e o axe acusa link-in-text-block). */
+.lead a { text-decoration: underline; text-underline-offset: .14em; }
 
 .cta {
   display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
