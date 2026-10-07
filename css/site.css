@@ -32,6 +32,7 @@
   --rim: rgba(255, 255, 255, .1);
   --phone-shadow: 0 48px 80px -32px rgba(0, 0, 0, .38), 0 16px 32px -20px rgba(0, 0, 0, .22);
   --icon-shadow: 0 2px 10px rgba(0, 0, 0, .14);
+  --line: rgba(0, 0, 0, .16);   /* divisória visível dentro de um cartão (a --hair é mais leve) */
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif;
   color-scheme: light dark;
 }
@@ -59,6 +60,7 @@
     --rim: rgba(255, 255, 255, .22);
     --phone-shadow: 0 48px 80px -32px rgba(0, 0, 0, .8), 0 16px 32px -20px rgba(0, 0, 0, .6);
     --icon-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+    --line: rgba(255, 255, 255, .2);
   }
 }
 
@@ -150,6 +152,13 @@ html[data-lang="es"] [data-lang]:not([data-lang="es"]) { display: none !importan
   opacity: .9; white-space: nowrap;
 }
 .nav-links a:hover { opacity: 1; text-decoration: none; }
+/* a página aberta: um ponto verde sob o link, o sinal do site */
+.nav-links a[aria-current="page"] { position: relative; opacity: 1; }
+.nav-links a[aria-current="page"]::after {
+  content: ""; position: absolute; left: 50%; bottom: 7px;
+  width: 4px; height: 4px; margin-left: -2px;
+  border-radius: 50%; background: var(--accent);
+}
 
 /* o seletor de idioma, em forma de controle segmentado */
 .lang { display: inline-flex; padding: 2px; border-radius: 999px; background: var(--seg); }
@@ -195,6 +204,8 @@ html[data-lang="es"] [data-lang]:not([data-lang="es"]) { display: none !importan
     border-bottom: 1px solid var(--hair); opacity: 1;
   }
   .nav.open .nav-links li:last-child a { border-bottom: 0; }
+  .nav.open .nav-links a[aria-current="page"] { color: var(--accent); }
+  .nav.open .nav-links a[aria-current="page"]::after { display: none; }
 }
 
 /* ---------- Tipografia das seções ---------- */
@@ -386,6 +397,124 @@ html[data-lang="es"] [data-lang]:not([data-lang="es"]) { display: none !importan
 .foot p + p { margin-top: 8px; }
 .sign { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 13px; font-weight: 500; }
 .sign .mark { width: 16px; height: 16px; }
+
+/* ---------- Página de produto ----------
+   O herói leva o ícone e o nome do app em cima da manchete; o resto
+   reaproveita .display, .sub, .cta e .stage do Início. */
+.hero .tile-head { margin-bottom: 28px; }
+.hero .cta { margin-top: 30px; }
+
+/* dois celulares lado a lado, do mesmo tamanho, cada um com a legenda
+   fora da moldura (a legenda dentro cairia sobre o bezel) */
+.stage.duo { gap: clamp(16px, 4vw, 56px); }
+.shot { flex: none; display: flex; flex-direction: column; align-items: center; }
+.stage.duo .phone { --w: 272px; }
+.shot figcaption {
+  margin-top: 18px; max-width: 16em; text-align: center;
+  font-size: 15px; line-height: 1.4; color: var(--ink-2);
+}
+@media (max-width: 739px) {
+  .stage.duo .phone { --w: min(272px, 38vw); }
+  .shot figcaption { font-size: 14px; }
+}
+
+/* os passos de uso (uma sequência de verdade: por isso são numerados) */
+.steps {
+  list-style: none; padding: 0; counter-reset: step;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 32px;
+  margin-top: clamp(40px, 6vw, 64px); text-align: left;
+}
+.steps li { counter-increment: step; }
+.steps li::before {
+  content: counter(step);
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; margin-bottom: 16px; border-radius: 50%;
+  background: var(--btn); color: #fff;
+  font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.steps h3 { font-size: 21px; font-weight: 600; letter-spacing: -.01em; line-height: 1.2; }
+.steps p { margin-top: 10px; color: var(--ink-2); }
+@media (max-width: 739px) { .steps { grid-template-columns: 1fr; gap: 30px; } }
+
+/* a lista de fatos com a marca de aprovação: o sinal verde em cada linha */
+.ticks {
+  list-style: none; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 40px;
+  max-width: 860px; margin: clamp(36px, 5vw, 56px) auto 0; text-align: left;
+}
+.ticks li {
+  display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 12px; align-items: start;
+  font-size: 17px; line-height: 1.4;
+}
+.ticks .mark { width: 20px; height: 20px; margin-top: 2px; }
+.ticks.one { grid-template-columns: 1fr; max-width: 38em; gap: 14px; }
+@media (max-width: 739px) { .ticks { grid-template-columns: 1fr; gap: 16px; } }
+
+/* o que ainda não está no app: a marca fica vazia e a etiqueta avisa */
+.ticks li.soon .mark { color: var(--ink-2); }
+.tag {
+  display: inline-block; vertical-align: 2px; margin-left: 8px; padding: 3px 9px;
+  border-radius: 999px; background: var(--seg); color: var(--seg-ink);
+  font-size: 12px; font-weight: 600; line-height: 1.2; white-space: nowrap;
+}
+
+/* o processo de trabalho: uma linha de marcas verdes, cada etapa um
+   sinal que passou */
+.flow {
+  list-style: none; padding: 0;
+  max-width: 600px; margin: clamp(36px, 5vw, 56px) auto 0; text-align: left;
+}
+.flow li { position: relative; padding: 0 0 30px 46px; }
+.flow li::before { /* o fio que liga uma marca à seguinte */
+  content: ""; position: absolute; left: 12px; top: 30px; bottom: 2px; width: 1px;
+  background: var(--line);
+}
+.flow li:last-child { padding-bottom: 0; }
+.flow li:last-child::before { display: none; }
+.flow .mark { position: absolute; left: 0; top: 1px; width: 26px; height: 26px; }
+.flow b { display: block; font-size: 21px; font-weight: 600; letter-spacing: -.01em; line-height: 1.2; }
+.flow span { display: block; margin-top: 6px; color: var(--ink-2); }
+
+/* a experiência: o cargo e as datas sob o título */
+.job { font-size: 15px; color: var(--ink-2); margin-top: 14px; }
+
+/* ---------- A página dos testes ----------
+   Um cartão por celular: a escolha do aparelho é a estrutura da página,
+   e por isso ganha caixa. */
+.plats {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;
+  margin-top: clamp(28px, 4vw, 44px); text-align: left; align-items: start;
+}
+.plat { background: var(--card); border-radius: 24px; padding: 28px 26px 26px; }
+.plat.soon { background: transparent; border: 1px dashed var(--line); }
+.plat.soon p { color: var(--ink-2); }
+.plat h3 { font-size: 24px; font-weight: 600; letter-spacing: -.012em; line-height: 1.2; }
+.plat p { margin-top: 12px; }
+.plat b { font-weight: 600; }
+.plat .pill { display: block; text-align: center; margin-top: 16px; text-wrap: balance; }
+.plat .fine {
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line);
+  font-size: 15px; line-height: 1.45; color: var(--ink-2);
+}
+.how { list-style: none; padding: 0; counter-reset: passo; margin-top: 6px; }
+.how > li {
+  counter-increment: passo;
+  display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 12px; align-items: start;
+}
+.how > li + li { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); }
+.how > li::before {
+  content: counter(passo); grid-column: 1; grid-row: 1;
+  display: flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--seg); color: var(--ink);
+  font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.how p { grid-column: 2; grid-row: 1; margin-top: 3px; }
+.how .pill { grid-column: 1 / -1; }
+@media (max-width: 739px) {
+  .plats { grid-template-columns: 1fr; }
+  .plat { padding: 24px 20px 22px; border-radius: 20px; }
+}
 
 /* ---------- Entrada suave ao rolar ----------
    Só quando há JavaScript (html.js); com "reduzir movimento", nada se mexe. */
