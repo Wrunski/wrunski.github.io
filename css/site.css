@@ -1,0 +1,402 @@
+/* site.css — a base de todas as páginas de wrunski.github.io.
+   Tokens, tipografia, barra fixa, seções, moldura de celular, cartões,
+   rodapé e os três idiomas. Sem build e sem dependência: este arquivo,
+   o js/site.js e a fonte Inter do Google Fonts como reserva para quem
+   não tem a fonte do sistema da Apple.
+
+   A identidade: base neutra (branco, #f5f5f7 e #1d1d1f) e um só verde,
+   o do sinal verde do QA, o do teste que passou. É a cor dos dois apps
+   também. A marca de aprovação (círculo verde com o check) é a assinatura
+   e aparece em dois lugares: a divisa do início e o rodapé. */
+
+/* ---------- Tokens ---------- */
+:root {
+  --bg: #fff;
+  --bg-alt: #f5f5f7;
+  --ink: #1d1d1f;
+  --ink-2: #6e6e73;
+  --accent: #1b7f4f;        /* o verde do sinal: 5,0:1 sobre branco */
+  --link: var(--accent);
+  --btn: var(--accent);
+  --btn-hover: #166a42;
+  --halo: rgba(27, 127, 79, .14);
+  --card: #fff;
+  --hair: rgba(0, 0, 0, .08);
+  --nav-bg: rgba(255, 255, 255, .72);
+  --menu-bg: rgba(255, 255, 255, .96);
+  --seg: rgba(0, 0, 0, .06);
+  --seg-ink: #515154;       /* o texto inativo do seletor: 6:1 sobre o fundo do controle */
+  --seg-on: #fff;
+  --seg-shadow: 0 1px 3px rgba(0, 0, 0, .14);
+  --bezel: #1d1d1f;
+  --rim: rgba(255, 255, 255, .1);
+  --phone-shadow: 0 48px 80px -32px rgba(0, 0, 0, .38), 0 16px 32px -20px rgba(0, 0, 0, .22);
+  --icon-shadow: 0 2px 10px rgba(0, 0, 0, .14);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000;
+    --bg-alt: #1d1d1f;
+    --ink: #f5f5f7;
+    --ink-2: #a1a1a6;
+    --accent: #30d158;      /* o mesmo verde, claro para o fundo escuro */
+    --link: var(--accent);
+    --btn: #1b7f4f;         /* o botão fica no verde fechado: texto branco legível */
+    --btn-hover: #1c8652;
+    --halo: rgba(48, 209, 88, .12);
+    --card: #2c2c2e;
+    --hair: rgba(255, 255, 255, .12);
+    --nav-bg: rgba(0, 0, 0, .72);
+    --menu-bg: rgba(0, 0, 0, .96);
+    --seg: rgba(255, 255, 255, .1);
+    --seg-ink: #a1a1a6;
+    --seg-on: #48484a;
+    --seg-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+    --bezel: #2c2c2e;       /* mais claro que o fundo, para a moldura aparecer no escuro */
+    --rim: rgba(255, 255, 255, .22);
+    --phone-shadow: 0 48px 80px -32px rgba(0, 0, 0, .8), 0 16px 32px -20px rgba(0, 0, 0, .6);
+    --icon-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+  }
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 64px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  padding-top: 48px; /* a barra fixa */
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.47;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, p, ul, figure { margin: 0; }
+img { max-width: 100%; height: auto; }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font: inherit; color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- Idiomas ----------
+   O site.js marca <html data-lang="pt|en|es"> antes de a página pintar;
+   aqui só se esconde o que não é do idioma ativo. Sem JavaScript, fica o
+   português. */
+html:not([data-lang]) [data-lang]:not([data-lang="pt"]),
+html[data-lang="pt"] [data-lang]:not([data-lang="pt"]),
+html[data-lang="en"] [data-lang]:not([data-lang="en"]),
+html[data-lang="es"] [data-lang]:not([data-lang="es"]) { display: none !important; }
+
+/* ---------- Layout ---------- */
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 22px; }
+.sec { padding: clamp(80px, 10vw, 136px) 0; }
+.alt { background: var(--bg-alt); }
+.center { text-align: center; }
+
+.skip {
+  position: absolute; left: 22px; top: -100px; z-index: 200;
+  background: var(--btn); color: #fff;
+  padding: 10px 16px; border-radius: 999px;
+}
+.skip:focus { top: 8px; }
+
+/* ---------- Barra fixa ---------- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; height: 48px; z-index: 100;
+  background: var(--nav-bg);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--hair);
+}
+.nav .in {
+  max-width: 980px; margin: 0 auto; padding: 0 22px; height: 48px;
+  display: flex; align-items: center; gap: 24px;
+}
+/* Toda área de toque tem pelo menos 44 px (o visual pode ser menor:
+   o padding ou um pseudo-elemento completa a área). */
+.brand {
+  display: inline-block; padding: 12px 0;
+  color: var(--ink); font-size: 15px; font-weight: 600; letter-spacing: -.01em;
+  margin-right: auto; white-space: nowrap;
+}
+.brand:hover { text-decoration: none; }
+
+.nav-links { display: flex; gap: 26px; list-style: none; padding: 0; }
+.nav-links a {
+  display: inline-block; padding: 14px 0;
+  color: var(--ink); font-size: 13px; letter-spacing: -.005em;
+  opacity: .9; white-space: nowrap;
+}
+.nav-links a:hover { opacity: 1; text-decoration: none; }
+
+/* o seletor de idioma, em forma de controle segmentado */
+.lang { display: inline-flex; padding: 2px; border-radius: 999px; background: var(--seg); }
+.lang button {
+  position: relative;
+  border: 0; background: transparent; color: var(--seg-ink);
+  font-size: 12px; font-weight: 600; line-height: 1;
+  padding: 7px 10px; border-radius: 999px; cursor: pointer;
+}
+.lang button::before { content: ""; position: absolute; left: 0; right: 0; top: -9px; bottom: -9px; }
+.lang button[aria-pressed="true"] {
+  background: var(--seg-on); color: var(--ink); box-shadow: var(--seg-shadow);
+}
+
+/* o menu do celular */
+.nav-toggle {
+  display: none; position: relative; width: 44px; height: 44px; margin-right: -14px;
+  border: 0; background: transparent; border-radius: 8px; cursor: pointer;
+}
+.nav-toggle span {
+  position: absolute; left: 14px; width: 16px; height: 1.5px;
+  background: var(--ink); border-radius: 2px;
+  transition: transform .3s ease, top .3s ease;
+}
+.nav-toggle span:first-child { top: 18px; }
+.nav-toggle span:last-child { top: 25px; }
+.nav.open .nav-toggle span:first-child { top: 21.5px; transform: rotate(45deg); }
+.nav.open .nav-toggle span:last-child { top: 21.5px; transform: rotate(-45deg); }
+
+@media (max-width: 833px) {
+  .nav .in { gap: 14px; }
+  .nav-toggle { display: block; }
+  .nav-links { display: none; }
+  .nav.open .nav-links {
+    display: flex; flex-direction: column; gap: 0;
+    position: absolute; top: 48px; left: 0; right: 0;
+    padding: 4px 22px 16px;
+    background: var(--menu-bg);
+    border-bottom: 1px solid var(--hair);
+  }
+  .nav.open .nav-links a {
+    display: block; font-size: 17px; padding: 13px 0;
+    border-bottom: 1px solid var(--hair); opacity: 1;
+  }
+  .nav.open .nav-links li:last-child a { border-bottom: 0; }
+}
+
+/* ---------- Tipografia das seções ---------- */
+.hero {
+  padding: clamp(72px, 10vw, 128px) 0 clamp(64px, 8vw, 112px);
+  text-align: center;
+}
+.eyebrow {
+  font-size: 21px; font-weight: 600; letter-spacing: -.01em;
+  color: var(--ink-2); margin-bottom: 14px;
+}
+.display {
+  font-size: clamp(40px, 1.6rem + 3.2vw, 72px);
+  line-height: 1.05; font-weight: 700; letter-spacing: -.02em;
+  text-wrap: balance;
+}
+.sub {
+  font-size: clamp(19px, 1rem + .55vw, 24px);
+  line-height: 1.33; color: var(--ink-2);
+  max-width: 40em; margin: 22px auto 0;
+  text-wrap: pretty;
+}
+.title {
+  font-size: clamp(32px, 1.25rem + 2.6vw, 56px);
+  line-height: 1.08; font-weight: 700; letter-spacing: -.016em;
+  text-wrap: balance;
+}
+.lead {
+  font-size: clamp(17px, 1rem + .4vw, 21px);
+  line-height: 1.45; color: var(--ink-2);
+  max-width: 38em; margin: 18px auto 0;
+  text-wrap: pretty;
+}
+
+.cta {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 14px 28px; margin-top: 34px;
+}
+.pill {
+  display: inline-block; background: var(--btn); color: #fff;
+  font-size: 17px; font-weight: 500; line-height: 1;
+  padding: 14px 24px; border-radius: 999px;
+}
+.pill:hover { background: var(--btn-hover); text-decoration: none; }
+.more { position: relative; display: inline-block; font-size: 17px; color: var(--link); white-space: nowrap; }
+.more::before { content: ""; position: absolute; left: 0; right: 0; top: -10px; bottom: -10px; }
+.more::after { content: "\00a0\203A"; }
+.addr { display: inline-block; margin-top: 8px; padding: 11px 0; font-size: 15px; color: var(--ink-2); }
+
+/* a marca de aprovação: a assinatura do site */
+.mark { display: inline-block; width: 18px; height: 18px; flex: none; color: var(--accent); }
+.motto {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: clamp(36px, 5vw, 56px);
+  font-size: 15px; font-weight: 500; letter-spacing: -.005em;
+}
+
+/* ---------- Os apps ---------- */
+.tile { text-align: center; }
+.tile-head { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.app-icon {
+  width: 76px; height: 76px; border-radius: 22.37%;
+  box-shadow: var(--icon-shadow);
+}
+.app-name { font-size: 21px; font-weight: 600; letter-spacing: -.01em; }
+.gloss {
+  display: block; font-size: 15px; font-weight: 400;
+  color: var(--ink-2); margin-top: 2px;
+}
+.tile .title { max-width: 18em; margin: 26px auto 0; }
+.tile .lead { max-width: 36em; margin-top: 20px; }
+.links {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 20px 32px; margin-top: 22px;
+}
+.links .more { font-size: clamp(17px, 1rem + .25vw, 21px); }
+
+/* a moldura de celular, toda em CSS: as medidas derivam da largura da
+   tela (--w), e a ilha cobre exatamente a que vem desenhada nas capturas */
+.stage {
+  position: relative;
+  display: flex; justify-content: center; align-items: flex-start;
+  margin-top: clamp(44px, 6vw, 72px);
+}
+.stage::before { /* o halo verde atrás dos celulares */
+  content: ""; position: absolute; inset: 12% 0 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(42% 42% at 50% 52%, var(--halo), transparent 72%);
+}
+.phone {
+  --w: 316px;
+  --bz: calc(var(--w) * .038);
+  position: relative; flex: none;
+  width: calc(var(--w) + 2 * var(--bz));
+  padding: var(--bz);
+  background: var(--bezel);
+  border-radius: calc(var(--w) * .17);
+  box-shadow: inset 0 0 0 1px var(--rim), var(--phone-shadow);
+}
+.phone::before, .phone::after {
+  content: ""; position: absolute;
+  width: calc(var(--w) * .013);
+  background: var(--bezel); border-radius: 2px;
+  box-shadow: inset 0 0 0 1px var(--rim);
+}
+.phone::before { left: calc(var(--w) * -.013); top: 20%; height: 15%; }
+.phone::after { right: calc(var(--w) * -.013); top: 24%; height: 11%; }
+.screen {
+  position: relative; overflow: hidden;
+  border-radius: calc(var(--w) * .132);
+  aspect-ratio: 1320 / 2868;
+  background: #000;
+}
+.screen img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.island {
+  position: absolute; left: 50%; top: calc(var(--w) * .03);
+  width: calc(var(--w) * .30); height: calc(var(--w) * .09);
+  transform: translateX(-50%);
+  border-radius: 999px; background: #000;
+}
+.stage .front { z-index: 2; }
+.stage .back {
+  --w: 272px;
+  margin-left: calc(var(--w) * -.22);
+  margin-top: calc(var(--w) * .26);
+  z-index: 1;
+}
+@media (max-width: 739px) {
+  .stage .back { display: none; }
+  .stage .front { --w: min(272px, 72vw); }
+}
+
+/* ---------- Os números ---------- */
+.grid {
+  list-style: none; padding: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;
+  margin-top: clamp(36px, 5vw, 56px); text-align: left;
+}
+.card {
+  background: var(--card); border-radius: 24px;
+  padding: 28px 24px 26px; min-height: 196px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 18px;
+}
+.num { /* cresce com a tela, mas "+1.500" cabe numa linha em qualquer coluna */
+  font-size: clamp(34px, 1.5rem + 1.2vw, 48px);
+  font-weight: 600; letter-spacing: -.025em; line-height: 1;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.lbl { font-size: 15px; line-height: 1.4; color: var(--ink-2); }
+@media (max-width: 899px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 479px) {
+  .grid { gap: 12px; }
+  .card { min-height: 0; padding: 22px 18px 20px; border-radius: 20px; gap: 14px; }
+  .lbl { font-size: 14px; }
+}
+@media (max-width: 359px) { .grid { grid-template-columns: 1fr; } }
+
+/* ---------- A seção escura ---------- */
+.dark {
+  --ink: #f5f5f7; --ink-2: #a1a1a6; --accent: #30d158; --link: var(--accent);
+  --hair: rgba(255, 255, 255, .12);
+  background: #000; color: var(--ink);
+}
+@media (prefers-color-scheme: dark) {
+  .dark { background: linear-gradient(180deg, #000 0%, #141415 100%); }
+}
+.three {
+  list-style: none; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 32px;
+  margin-top: clamp(40px, 6vw, 64px); text-align: left;
+}
+.three svg { display: block; width: 30px; height: 30px; color: var(--link); margin-bottom: 16px; }
+.three h3 { font-size: 21px; font-weight: 600; letter-spacing: -.01em; line-height: 1.2; }
+.three p { margin-top: 10px; color: var(--ink-2); font-size: 17px; }
+@media (max-width: 739px) { .three { grid-template-columns: 1fr; gap: 32px; } }
+.policy {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 20px 32px; margin-top: clamp(36px, 5vw, 56px);
+}
+.policy .more { white-space: normal; max-width: 100%; } /* nomes longos: quebram em vez de rolar de lado */
+
+/* ---------- Rodapé ---------- */
+.foot {
+  background: var(--bg-alt); border-top: 1px solid var(--hair);
+  padding: 36px 0 56px; font-size: 12px; line-height: 1.5; color: var(--ink-2);
+}
+.foot-links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0 24px; }
+.foot-links a { display: inline-block; padding: 13px 0; color: var(--ink); }
+.foot p { margin-top: 16px; max-width: 72em; }
+.foot p + p { margin-top: 8px; }
+.sign { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 13px; font-weight: 500; }
+.sign .mark { width: 16px; height: 16px; }
+
+/* ---------- Entrada suave ao rolar ----------
+   Só quando há JavaScript (html.js); com "reduzir movimento", nada se mexe. */
+.js .reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .9s cubic-bezier(.2, .65, .2, 1), transform .9s cubic-bezier(.2, .65, .2, 1);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+.js .reveal.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .nav-toggle span { transition: none; }
+}
