@@ -29,6 +29,43 @@ for (const pagina of PAGINAS) {
     expect(new Set(descricoes.values()).size, 'as três descrições são diferentes').toBe(3);
     expect([...descricoes.values()], 'a descrição escrita no HTML é uma das três').toContain(await meta.getAttribute('content'));
   });
+
+  // O cartão de prévia (WhatsApp, LinkedIn, X): título, descrição, imagem
+  // de 1200×630 que existe no site e o texto alternativo da imagem, no
+  // Open Graph e no Twitter. Sem o alt, o leitor de tela de quem recebe o
+  // link não sabe o que há na imagem.
+  test(`a página ${pagina.nome} tem o cartão de prévia completo`, async ({ page, request }) => {
+    await page.goto(pagina.caminho);
+    const meta = async (seletor: string) => {
+      const el = page.locator(seletor);
+      await expect(el, `${seletor} existe uma vez`).toHaveCount(1);
+      const valor = (await el.getAttribute('content')) || '';
+      expect(valor.trim().length, `${seletor} não está vazio`).toBeGreaterThan(0);
+      return valor;
+    };
+    const titulo = await meta('meta[property="og:title"]');
+    expect(titulo).toBe(await meta('meta[name="twitter:title"]'));
+    await meta('meta[property="og:description"]');
+    await meta('meta[name="twitter:description"]');
+    expect(await meta('meta[name="twitter:card"]')).toBe('summary_large_image');
+    expect(await meta('meta[property="og:image:width"]')).toBe('1200');
+    expect(await meta('meta[property="og:image:height"]')).toBe('630');
+
+    const imagem = await meta('meta[property="og:image"]');
+    expect(imagem).toBe(await meta('meta[name="twitter:image"]'));
+    expect(imagem, 'a imagem do cartão é um endereço absoluto do site, em HTTPS').toMatch(/^https:\/\/wrunski\.github\.io\/img\//);
+    const resposta = await request.get(new URL(imagem).pathname);
+    expect(resposta.status(), 'a imagem do cartão existe no site').toBe(200);
+    expect(resposta.headers()['content-type'], 'é um PNG').toContain('image/png');
+
+    const alt = await meta('meta[property="og:image:alt"]');
+    expect(alt.length, 'o alt descreve o cartão').toBeGreaterThan(40);
+    expect(await meta('meta[name="twitter:image:alt"]'), 'o alt do Twitter é o mesmo').toBe(alt);
+
+    const url = await meta('meta[property="og:url"]');
+    expect(url).toBe(`https://wrunski.github.io${pagina.caminho}`);
+    await expect(page.locator('link[rel="canonical"]'), 'o canonical é a mesma URL').toHaveAttribute('href', url);
+  });
 }
 
 // Um endereço que não existe devolve 404, e não uma página qualquer: assim
