@@ -11,7 +11,9 @@
       data-alt-xx e data-label-xx trocam o alt das imagens e os aria-label.
    2. O menu do celular (.nav-toggle abre e fecha .nav-links).
    3. A entrada suave ao rolar (.reveal ganha .is-in ao entrar na tela),
-      com IntersectionObserver e sem nada se mexer em "reduzir movimento". */
+      com IntersectionObserver e sem nada se mexer em "reduzir movimento".
+   4. O laço da gravação (video.laco): em "reduzir movimento", só o pôster;
+      o botão .laco-btn pausa e retoma. */
 (function () {
   'use strict';
 
@@ -117,9 +119,37 @@
     for (var i = 0; i < els.length; i++) io.observe(els[i]);
   }
 
+  /* O laço da gravação: com prefers-reduced-motion, o vídeo não toca e
+     volta ao pôster (load() desfaz o que o autoplay já tiver começado).
+     Senão, o botão [aria-controls] pausa e retoma (WCAG 2.2.2). */
+  function initLaco() {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    each('video.laco', function (video) {
+      function parar() {
+        video.removeAttribute('autoplay');
+        video.preload = 'none';
+        video.pause();
+        video.load();
+      }
+      if (reduce.matches) parar();
+      if (reduce.addEventListener) reduce.addEventListener('change', function (e) { if (e.matches) parar(); });
+    });
+    each('.laco-btn', function (btn) {
+      var video = document.getElementById(btn.getAttribute('aria-controls'));
+      if (!video) return;
+      btn.addEventListener('click', function () {
+        var pausar = btn.getAttribute('aria-pressed') !== 'true';
+        btn.setAttribute('aria-pressed', pausar ? 'true' : 'false');
+        if (pausar) video.pause();
+        else video.play().catch(function () {});
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initLang();
     initMenu();
     initReveal();
+    initLaco();
   });
 })();

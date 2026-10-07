@@ -322,7 +322,7 @@ html[data-lang="es"] [data-lang]:not([data-lang="es"]) { display: none !importan
   aspect-ratio: 1320 / 2868;
   background: #000;
 }
-.screen img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.screen img, .screen video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .island {
   position: absolute; left: 50%; top: calc(var(--w) * .03);
   width: calc(var(--w) * .30); height: calc(var(--w) * .09);
@@ -560,4 +560,28 @@ html[data-lang="es"] [data-lang]:not([data-lang="es"]) { display: none !importan
 .wip::before {
   content: ""; width: 8px; height: 8px; border-radius: 50%;
   border: 1.5px solid currentColor;
+}
+
+/* ---------- O laço da gravação (página do Tem na Geladeira) ----------
+   O vídeo vai na moldura de celular; o botão abaixo dos celulares o pausa
+   (WCAG 2.2.2). Sem JS, ou com prefers-reduced-motion, o botão some: o
+   site.js já deixou só o pôster. */
+.laco-ctl { display: none; margin-top: 28px; text-align: center; }
+.js .laco-ctl { display: block; }
+@media (prefers-reduced-motion: reduce) { .js .laco-ctl { display: none; } }
+.laco-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 0 18px 0 14px;
+  border: 0; border-radius: 999px; background: var(--seg); color: var(--ink);
+  font: inherit; font-size: 15px; font-weight: 500; cursor: pointer;
+}
+.laco-btn:hover { background: var(--hair); }
+.laco-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.laco-btn::before { /* o ícone: duas barras (pausar) ou o triângulo (tocar) */
+  content: ""; width: 12px; height: 12px; flex: none;
+  background: linear-gradient(90deg, currentColor 0 4px, transparent 4px 8px, currentColor 8px 12px);
+}
+.laco-btn[aria-pressed="true"]::before {
+  background: currentColor;
+  clip-path: polygon(15% 0, 100% 50%, 15% 100%);
 }

@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self'; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
@@ -89,12 +89,18 @@
 
       <!-- o par conta a manchete: a despensa marcada, atrás, e o que dá para fazer, na frente -->
       <div class="stage">
+        <!-- o laço da gravação (7,2 s): o Início e uma receita. Com
+             prefers-reduced-motion, o site.js deixa só o pôster -->
         <figure class="phone front">
           <div class="screen">
-            <img src="../../img/geladeira-inicio.webp" width="720" height="1564" decoding="async"
-                 alt="Tela inicial do Tem na Geladeira: a lista “Dá para fazer agora”, com as receitas possíveis com a despensa marcada"
-                 data-alt-en="Home screen of Tem na Geladeira: the “You can make now” list, with the recipes possible from the checked pantry"
-                 data-alt-es="Pantalla de inicio de Tem na Geladeira: la lista “Se puede hacer ahora”, con las recetas posibles con la despensa marcada">
+            <video class="laco" id="laco" autoplay muted loop playsinline preload="auto" width="720" height="1564"
+                   poster="../../img/tem-na-geladeira-laco.webp"
+                   aria-label="Gravação do Tem na Geladeira: o Início, com a lista “Dá para fazer agora”, e uma receita aberta"
+                   data-label-en="Recording of Tem na Geladeira: Home, with the “You can make now” list, and an open recipe"
+                   data-label-es="Grabación de Tem na Geladeira: el Inicio, con la lista “Se puede hacer ahora”, y una receta abierta">
+              <source src="../../img/tem-na-geladeira-laco.webm" type="video/webm">
+              <source src="../../img/tem-na-geladeira-laco.mp4" type="video/mp4">
+            </video>
             <span class="island" aria-hidden="true"></span>
           </div>
         </figure>
@@ -108,6 +114,8 @@
           </div>
         </figure>
       </div>
+      <!-- o laço repete sem parar: o botão o pausa (WCAG 2.2.2) -->
+      <p class="laco-ctl"><button class="laco-btn" type="button" aria-controls="laco" aria-pressed="false"><span data-lang="pt">Pausar a animação</span><span data-lang="en">Pause the animation</span><span data-lang="es">Pausar la animación</span></button></p>
     </div>
   </section>
 
