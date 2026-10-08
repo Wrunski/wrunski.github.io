@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { PAGINAS } from './paginas';
+import { PAGINAS_E_404 as PAGINAS } from './paginas';
 
 // O axe-core, o mesmo motor do Lighthouse e da extensão axe DevTools, roda
 // as regras das WCAG 2.2 nos níveis A e AA em cada página, no tema claro.

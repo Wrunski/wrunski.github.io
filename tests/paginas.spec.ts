@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { IDIOMAS, PAGINAS } from './paginas';
+import { IDIOMAS, PAGINA_404, PAGINAS, PAGINAS_E_404 } from './paginas';
 
-// Cada página responde, tem título e mostra o conteúdo principal.
-for (const pagina of PAGINAS) {
+// Cada página (a do 404 também) responde, tem título e mostra o conteúdo principal.
+for (const pagina of PAGINAS_E_404) {
   test(`a página ${pagina.nome} (${pagina.caminho}) responde`, async ({ page }) => {
     const resposta = await page.goto(pagina.caminho);
     expect(resposta, 'o servidor devolveu uma resposta').not.toBeNull();
@@ -30,6 +30,53 @@ for (const pagina of PAGINAS) {
     expect([...descricoes.values()], 'a descrição escrita no HTML é uma das três').toContain(await meta.getAttribute('content'));
   });
 
+  // O ícone do site (a marca do sinal verde): o SVG para os navegadores
+  // modernos, o PNG de 32 px para os outros e o ícone de 180 px que o
+  // iPhone usa na tela de início. Os três existem e são o tipo que dizem.
+  test(`a página ${pagina.nome} declara o ícone do site, e ele existe`, async ({ page, request }) => {
+    await page.goto(pagina.caminho);
+    const icones = await page.locator('link[rel~="icon"], link[rel="apple-touch-icon"]').evaluateAll((ls) =>
+      ls.map((l) => ({ rel: l.getAttribute('rel'), type: l.getAttribute('type'), href: (l as HTMLLinkElement).href })),
+    );
+    expect(icones.map((i) => `${i.rel} ${new URL(i.href).pathname}`).sort()).toEqual([
+      'apple-touch-icon /img/apple-touch-icon.png',
+      'icon /img/favicon-32.png',
+      'icon /img/favicon.svg',
+    ]);
+    for (const icone of icones) {
+      const resposta = await request.get(icone.href);
+      expect(resposta.status(), `${icone.href} existe`).toBe(200);
+      const esperado = icone.href.endsWith('.svg') ? 'image/svg+xml' : 'image/png';
+      expect(resposta.headers()['content-type'], `${icone.href} é ${esperado}`).toContain(esperado);
+    }
+  });
+}
+
+// A página do 404 é servida pelo GitHub Pages em qualquer endereço que não
+// existe, em qualquer profundidade: tudo o que ela carrega e todo link
+// interno precisam ser absolutos (a partir da raiz), senão quebram em
+// /apps/x/y/. E ela não entra nos buscadores.
+test('a página 404 usa só caminhos absolutos e é noindex', async ({ page }) => {
+  await page.goto(PAGINA_404.caminho);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+  const relativos = await page.evaluate(() => {
+    const atributos: [string, string][] = [['link[href]', 'href'], ['script[src]', 'src'], ['img[src]', 'src'], ['a[href]', 'href']];
+    const errados: string[] = [];
+    for (const [seletor, atributo] of atributos) {
+      document.querySelectorAll(seletor).forEach((el) => {
+        const valor = el.getAttribute(atributo) || '';
+        if (/^(https?:|mailto:|#)/.test(valor)) return;
+        if (!valor.startsWith('/')) errados.push(`${seletor} ${atributo}="${valor}"`);
+      });
+    }
+    return errados;
+  });
+  expect(relativos, 'nenhum caminho relativo').toEqual([]);
+  // Ela leva de volta ao início, visivelmente.
+  await expect(page.locator('main a.pill:visible')).toHaveAttribute('href', '/');
+});
+
+for (const pagina of PAGINAS) {
   // O cartão de prévia (WhatsApp, LinkedIn, X): título, descrição, imagem
   // de 1200×630 que existe no site e o texto alternativo da imagem, no
   // Open Graph e no Twitter. Sem o alt, o leitor de tela de quem recebe o

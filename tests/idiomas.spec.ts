@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { HTML_LANG, IDIOMAS, PAGINAS, SOBRE_NO_MENU, type Idioma } from './paginas';
+import { HTML_LANG, IDIOMAS, PAGINAS_E_404 as PAGINAS, SOBRE_NO_MENU, type Idioma } from './paginas';
 
 // O que "estar em um idioma" significa para o site: o atributo que o CSS
 // usa para esconder os outros idiomas, o <html lang> que o leitor de tela

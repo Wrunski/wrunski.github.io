@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { PAGINAS } from './paginas';
+import { PAGINAS_E_404 as PAGINAS } from './paginas';
 
 // O site segue o tema do sistema (prefers-color-scheme), sem botão próprio.
 // O teste finge os dois sistemas e mede a cor de fundo e a do texto que o

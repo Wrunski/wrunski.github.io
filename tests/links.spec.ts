@@ -1,5 +1,5 @@
 import { test, expect, type Page, type APIRequestContext } from '@playwright/test';
-import { PAGINAS } from './paginas';
+import { PAGINAS_E_404 as PAGINAS } from './paginas';
 
 // O site publicado. Um link absoluto para ele é interno, e o teste o
 // confere no servidor local, no mesmo caminho.
@@ -96,13 +96,15 @@ for (const pagina of PAGINAS) {
       expect(problemas, 'nenhum link externo fora da regra S10').toEqual([]);
     });
 
-    test('as imagens, o CSS e o JS da página carregam', async ({ page, request }) => {
+    test('as imagens, o CSS, o JS e os ícones da página carregam', async ({ page, request }) => {
       await page.goto(pagina.caminho);
       const recursos = await page.evaluate(() => {
         const urls = new Set<string>();
         document.querySelectorAll<HTMLImageElement>('img[src]').forEach((i) => urls.add(i.src));
         document.querySelectorAll<HTMLScriptElement>('script[src]').forEach((s) => urls.add(s.src));
-        document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"][href]').forEach((l) => urls.add(l.href));
+        document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"][href], link[rel~="icon"][href], link[rel="apple-touch-icon"][href]').forEach((l) => urls.add(l.href));
+        document.querySelectorAll<HTMLVideoElement>('video[poster]').forEach((v) => urls.add(v.poster));
+        document.querySelectorAll<HTMLSourceElement>('video source[src]').forEach((s) => urls.add(s.src));
         return [...urls].filter((u) => u.startsWith(location.origin));
       });
       expect(recursos.length, 'a página referencia recursos locais').toBeGreaterThan(0);

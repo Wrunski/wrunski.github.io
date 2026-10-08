@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { IDIOMAS, PAGINAS } from './paginas';
+import { IDIOMAS, PAGINAS_E_404 as PAGINAS } from './paginas';
 
 // A largura do iPhone pequeno. Nada pode rolar de lado: quando rola, é um
 // elemento mais largo que a tela (texto comprido sem quebra, imagem sem

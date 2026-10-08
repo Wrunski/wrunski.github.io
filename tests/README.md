@@ -1,6 +1,6 @@
 # Testes do site
 
-*Última atualização: 07/10/2026*
+*Última atualização: 08/10/2026*
 
 Testes de ponta a ponta do site wrunski.github.io, escritos com o
 [Playwright](https://playwright.dev) e rodados pelo GitHub Actions a cada
@@ -13,9 +13,9 @@ internet, fora as fontes do Google que a própria página carrega.
 
 | Arquivo | O que prova, em uma frase |
 |---|---|
-| `paginas.spec.ts` | As cinco páginas (`/`, `/sobre/`, as duas dos apps e `/testes/`) respondem com 200, têm título e mostram um único título principal. Um endereço inventado devolve 404, para o teste dos links saber a diferença entre um link que funciona e um quebrado |
-| `links.spec.ts` | Nenhum link interno leva a uma página que não existe, e toda âncora (`#alguma-coisa`) tem destino na página. Os links externos são HTTPS e, quando abrem em nova aba, levam `rel="noopener"` (a página de fora não ganha acesso à nossa). As imagens, o CSS e o JS de cada página carregam |
-| `idiomas.spec.ts` | Os botões PT, EN e ES trocam a página inteira: o texto visível, o `<html lang>` que o leitor de tela usa, o título da aba (nas páginas que o traduzem; nas dos apps ele é o nome do app) e o botão marcado. A escolha fica salva na chave `lang` do `localStorage`, vale nas cinco páginas e sobrevive a recarregar. Sem escolha salva, o site segue o idioma do navegador. O `localStorage` guarda só essa chave |
+| `paginas.spec.ts` | As cinco páginas (`/`, `/sobre/`, as duas dos apps e `/testes/`) e a do 404 respondem com 200, têm título e mostram um único título principal; cada uma tem a descrição (`meta description`) nos três idiomas e declara o ícone do site (SVG, PNG e o do iPhone), que existe. As cinco têm o cartão de prévia completo (Open Graph e Twitter: título, descrição, imagem de 1200×630 que existe no site e o alt da imagem). A página do 404, que o GitHub Pages serve em qualquer endereço que não existe, usa só caminhos absolutos e é `noindex`. Um endereço inventado devolve 404, para o teste dos links saber a diferença entre um link que funciona e um quebrado |
+| `links.spec.ts` | Nenhum link interno leva a uma página que não existe, e toda âncora (`#alguma-coisa`) tem destino na página. Os links externos são HTTPS e, quando abrem em nova aba, levam `rel="noopener"` (a página de fora não ganha acesso à nossa). As imagens, o CSS, o JS, os ícones e o vídeo de cada página carregam |
+| `idiomas.spec.ts` | Os botões PT, EN e ES trocam a página inteira: o texto visível, o `<html lang>` que o leitor de tela usa, o título da aba (nas páginas que o traduzem; nas dos apps ele é o nome do app), a descrição da página e o botão marcado. A escolha fica salva na chave `lang` do `localStorage`, vale nas seis páginas e sobrevive a recarregar. Sem escolha salva, o site segue o idioma do navegador. O `localStorage` guarda só essa chave |
 | `celular.spec.ts` | Numa tela de 375 px (o iPhone pequeno), nenhuma página rola de lado, em nenhum dos três idiomas. O menu do celular aparece, abre e fecha pelo teclado (Esc) |
 | `tema.spec.ts` | Quando o sistema está no modo escuro, o fundo fica preto e o texto claro; no claro, o contrário. O teste mede a cor que o navegador aplicou, e não o que o CSS promete |
 | `ancoras.spec.ts` | As âncoras `#trabalho`, `#work` e `#trabajo` do site antigo, que já foram enviadas em currículo e mensagens, existem uma vez só, rolam a página até os apps e ficam logo antes da seção do Organizador |
@@ -23,7 +23,9 @@ internet, fora as fontes do Google que a própria página carrega.
 | `acessibilidade.spec.ts` | O [axe-core](https://github.com/dequelabs/axe-core), o mesmo motor do Lighthouse, roda as regras das WCAG 2.2 (níveis A e AA) em cada página, no tema claro e com a animação de entrada desligada (senão ele mede o contraste no meio do esmaecimento e acusa um defeito que não existe). Qualquer violação séria ou crítica (contraste insuficiente, imagem sem alternativa, botão sem nome, controle fora do teclado) reprova. As menores ficam anexadas ao relatório, para revisão |
 
 A lista das páginas e dos idiomas fica em `paginas.ts`: uma página nova
-entra ali e passa por todos os testes.
+entra ali e passa por todos os testes. A página do 404 fica numa lista à
+parte (`PAGINA_404`), porque não tem cartão de prévia; os outros testes a
+percorrem junto com as cinco (`PAGINAS_E_404`).
 
 ## Como falar disso numa entrevista
 

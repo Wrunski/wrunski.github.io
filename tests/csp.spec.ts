@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { PAGINAS } from './paginas';
+import { PAGINAS_E_404 as PAGINAS } from './paginas';
 
 // A Content-Security-Policy (decisão S10) é a lista do que a página pode
 // carregar e rodar. Num site estático no GitHub Pages ela vai em <meta>,
