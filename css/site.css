@@ -490,6 +490,9 @@ html[data-lang="es"] [data-lang]:not([data-lang="es"]) { display: none !importan
   margin-top: clamp(28px, 4vw, 44px); text-align: left; align-items: start;
 }
 .plat { background: var(--card); border-radius: 24px; padding: 28px 26px 26px; }
+/* na seção branca, o cartão branco sumia: ali ele fica no cinza da seção
+   alternada (e, no escuro, no cinza elevado), para a caixa aparecer */
+.sec:not(.alt) .plat:not(.soon) { background: var(--bg-alt); }
 .plat.soon { background: transparent; border: 1px dashed var(--line); }
 .plat.soon p { color: var(--ink-2); }
 .plat h3 { font-size: 24px; font-weight: 600; letter-spacing: -.012em; line-height: 1.2; }
