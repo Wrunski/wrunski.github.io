@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- As cinco páginas do site, para os buscadores. A do 404 fica de fora
+     (é noindex), e as políticas moram no repositório "politicas". -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://wrunski.github.io/</loc></url>
+  <url><loc>https://wrunski.github.io/sobre/</loc></url>
+  <url><loc>https://wrunski.github.io/apps/organizador-financas/</loc></url>
+  <url><loc>https://wrunski.github.io/apps/tem-na-geladeira/</loc></url>
+  <url><loc>https://wrunski.github.io/testes/</loc></url>
+</urlset>

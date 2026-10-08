@@ -115,6 +115,23 @@ for (const pagina of PAGINAS) {
   });
 }
 
+// O sitemap lista exatamente as cinco páginas, pelos endereços canônicos, e
+// o robots.txt libera o site inteiro e aponta para o sitemap.
+test('o sitemap tem as cinco páginas, e o robots.txt aponta para ele', async ({ request }) => {
+  const sitemap = await request.get('/sitemap.xml');
+  expect(sitemap.status()).toBe(200);
+  const locs = [...(await sitemap.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]).sort();
+  expect(locs).toEqual(PAGINAS.map((p) => `https://wrunski.github.io${p.caminho}`).sort());
+
+  const robots = await request.get('/robots.txt');
+  expect(robots.status()).toBe(200);
+  const texto = await robots.text();
+  expect(texto).toMatch(/^User-agent: \*$/m);
+  expect(texto).toMatch(/^Allow: \/$/m);
+  expect(texto).toMatch(/^Sitemap: https:\/\/wrunski\.github\.io\/sitemap\.xml$/m);
+  expect(texto, 'nada é bloqueado').not.toMatch(/^Disallow: \S/m);
+});
+
 // Um endereço que não existe devolve 404, e não uma página qualquer: assim
 // o teste dos links consegue distinguir um link quebrado de um que funciona.
 test('um endereço inexistente devolve 404', async ({ request }) => {
