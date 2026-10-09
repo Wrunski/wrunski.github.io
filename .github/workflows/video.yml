@@ -55,10 +55,14 @@ jobs:
       - name: Renderizar a cena 3
         run: npm run render
 
+      - name: Instalar o ffmpeg e o ffprobe (a imagem do runner não os traz)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg
+
       - name: Conferir o arquivo e tirar os quadros-chave
         run: npm run conferir
 
-      - name: Guardar o MP4 e os quadros
+      - name: Guardar o MP4 e os quadros (também quando a checagem falha)
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: cena-3

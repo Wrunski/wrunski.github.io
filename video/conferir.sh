@@ -4,8 +4,8 @@
 #
 #   bash conferir.sh out/cena-3.mp4
 #
-# Precisa do ffprobe e do ffmpeg (no runner do GitHub já vêm; no Mac, os de
-# ~/.local/bin). Sai com 1 se alguma checagem falhar.
+# Precisa do ffprobe e do ffmpeg (no runner do GitHub, o workflow os instala
+# pelo apt; no Mac, os de ~/.local/bin). Sai com 1 se alguma checagem falhar.
 set -euo pipefail
 
 ARQ="${1:?informe o MP4, como out/cena-3.mp4}"
