@@ -1,0 +1,26 @@
+{
+  "name": "wrunski-video",
+  "version": "0.1.0",
+  "private": true,
+  "description": "O vídeo de apresentação do Wagner, feito em código com o Remotion: a prova da cena 3 (o Tem na Geladeira numa moldura de celular).",
+  "license": "UNLICENSED",
+  "scripts": {
+    "render": "remotion render cena3 out/cena-3.mp4",
+    "quadro": "remotion still cena3 out/quadro.png --frame=0",
+    "typecheck": "tsc --noEmit",
+    "verify": "npm run typecheck",
+    "conferir": "bash conferir.sh out/cena-3.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.534",
+    "@remotion/fonts": "4.0.534",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remotion": "4.0.534"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "7.0.2"
+  }
+}

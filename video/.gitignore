@@ -1,0 +1,3 @@
+# O render e os quadros saem no Actions (artefato do run); binário gerado não vai para o git.
+node_modules/
+out/
