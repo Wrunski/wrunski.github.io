@@ -29,11 +29,11 @@ const CONTADOR_ENTRA = [204, 218] as const;
 const CONTAGEM = [204, 258] as const; // 0 → 1.296
 
 // O celular, em repouso (escala 1): a tela de 520 px de largura, com o topo da
-// moldura em 430 px. A parte de baixo passa da borda do quadro, de propósito.
+// moldura em 400 px. A parte de baixo passa da borda do quadro, de propósito.
 const TELA_W = 520;
 const TELA_H = TELA_W * RAZAO_TELA;
 const BZ = bezelDe(TELA_W);
-const CEL_TOPO = 430;
+const CEL_TOPO = 400;
 const TELA_TOPO = CEL_TOPO + BZ;
 const CX = T.LARGURA / 2;
 
@@ -66,7 +66,7 @@ const entra = (frame: number, faixa: readonly [number, number], dy = 24) => ({
 export const Cena3: React.FC = () => {
   const frame = useCurrentFrame();
   const { s, tx, ty } = camera(frame);
-  const sobe = interpolate(frame, SOBE, [240, 0], { ...clamp, easing: desacelera });
+  const sobe = interpolate(frame, SOBE, [150, 0], { ...clamp, easing: desacelera });
   const quadroVideo = Math.min(Math.max(frame - VIDEO_INICIO, 0), VIDEO_ULTIMO);
   const testes = Math.round(
     interpolate(frame, CONTAGEM, [0, T.TESTES], { ...clamp, easing: desacelera }),
@@ -96,7 +96,7 @@ export const Cena3: React.FC = () => {
       {/* o halo verde atrás do celular, como no site */}
       <AbsoluteFill
         style={{
-          background: `radial-gradient(44% 40% at 50% 62%, ${T.HALO}, transparent 72%)`,
+          background: `radial-gradient(50% 44% at 50% 56%, ${T.HALO}, transparent 72%)`,
           opacity: interpolate(frame, [0, 40], [0, 1], clamp),
         }}
       />
@@ -143,10 +143,10 @@ export const Cena3: React.FC = () => {
           position: 'absolute',
           left: 0,
           right: 0,
-          top: 800,
-          height: T.ALTURA - 800,
+          top: 760,
+          height: T.ALTURA - 760,
           background:
-            'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.6) 25%, rgba(0,0,0,.94) 45%, #000 60%)',
+            'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,.6) 25%, rgba(0,0,0,.97) 42%, #000 52%)',
           opacity: interpolate(frame, [54, 78], [0, 1], clamp),
         }}
       />

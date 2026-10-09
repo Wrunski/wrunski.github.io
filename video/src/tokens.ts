@@ -6,7 +6,7 @@ export const CINZA = '#a1a1a6'; // --ink-2 do tema escuro
 export const CINZA_CLARO = '#d1d1d6';
 export const BEZEL = '#1d1d1f'; // --bezel
 export const RIM = 'rgba(255, 255, 255, .12)'; // --rim
-export const HALO = 'rgba(27, 127, 79, .30)'; // o halo do --accent atrás do celular
+export const HALO = 'rgba(27, 127, 79, .42)'; // o halo do --accent atrás do celular
 export const FONTE = 'Inter, "Helvetica Neue", Arial, sans-serif';
 
 // O quadro: 4:5 em 1080×1350, 30 qps, 10 s.
