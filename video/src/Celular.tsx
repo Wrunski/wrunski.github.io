@@ -4,6 +4,12 @@ import { BEZEL, RIM } from './tokens';
 // A moldura de celular do site (css/site.css, .phone, .screen e .island),
 // toda em CSS, sem o bezel da Apple: as medidas derivam da largura da tela
 // (w), e a ilha cobre exatamente a que vem desenhada na gravação.
+//
+// As medidas da moldura são explícitas (largura e altura totais, com
+// box-sizing: border-box): na prova 1, o `width: w` com `padding` dependia do
+// box-sizing, e o Remotion renderizava a moldura com a largura da tela, sem
+// o bezel da direita, que era o defeito do canto de cima, à direita, no
+// primeiro quadro (ajuste 3 da revisão de 10/10/2026).
 export const RAZAO_TELA = 2868 / 1320;
 
 export const bezelDe = (w: number) => w * 0.038;
@@ -13,6 +19,7 @@ export const Celular: React.FC<{ largura: number; children: React.ReactNode }> =
   children,
 }) => {
   const bz = bezelDe(w);
+  const h = w * RAZAO_TELA;
   const botao: React.CSSProperties = {
     position: 'absolute',
     width: w * 0.013,
@@ -24,7 +31,9 @@ export const Celular: React.FC<{ largura: number; children: React.ReactNode }> =
     <div
       style={{
         position: 'relative',
-        width: w,
+        boxSizing: 'border-box',
+        width: w + 2 * bz,
+        height: h + 2 * bz,
         padding: bz,
         background: BEZEL,
         borderRadius: w * 0.17,
@@ -37,8 +46,9 @@ export const Celular: React.FC<{ largura: number; children: React.ReactNode }> =
         style={{
           position: 'relative',
           overflow: 'hidden',
+          boxSizing: 'border-box',
           width: w,
-          height: w * RAZAO_TELA,
+          height: h,
           borderRadius: w * 0.132,
           background: '#000',
         }}

@@ -2,14 +2,14 @@
   "name": "wrunski-video",
   "version": "0.1.0",
   "private": true,
-  "description": "O vídeo de apresentação do Wagner, feito em código com o Remotion: a prova da cena 3 (o Tem na Geladeira numa moldura de celular).",
+  "description": "O vídeo do Tem na Geladeira, feito em código com o Remotion: a prova 2 (o app numa moldura de celular, com a gravação do simulador e os toques visíveis), o mestre em 9:16.",
   "license": "UNLICENSED",
   "scripts": {
-    "render": "remotion render cena3 out/cena-3.mp4",
-    "quadro": "remotion still cena3 out/quadro.png --frame=0",
+    "render": "remotion render mestre out/tem-na-geladeira-9x16.mp4",
+    "quadro": "remotion still mestre out/quadro.png --frame=0",
     "typecheck": "tsc --noEmit",
     "verify": "npm run typecheck",
-    "conferir": "bash conferir.sh out/cena-3.mp4"
+    "conferir": "bash conferir.sh out/tem-na-geladeira-9x16.mp4"
   },
   "dependencies": {
     "@remotion/cli": "4.0.534",

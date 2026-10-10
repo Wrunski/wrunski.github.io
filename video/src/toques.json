@@ -1,0 +1,14 @@
+{
+  "tela": { "largura": 440, "altura": 956 },
+  "duracao": 17.3,
+  "quadros": 699,
+  "toques": [
+    { "rotulo": "Despensa", "tempo": 1.68, "x": 385, "y": 905 },
+    { "rotulo": "frango", "tempo": 3.48, "x": 220, "y": 640 },
+    { "rotulo": "ovo", "tempo": 5.28, "x": 220, "y": 780 },
+    { "rotulo": "Início", "tempo": 8.08, "x": 55, "y": 905 },
+    { "rotulo": "Ovos com tomate à chinesa", "tempo": 11.28, "x": 220, "y": 470 },
+    { "rotulo": "Mais porções", "tempo": 13.68, "x": 400, "y": 330 },
+    { "rotulo": "Mais porções", "tempo": 14.78, "x": 400, "y": 330 }
+  ]
+}

@@ -9,21 +9,27 @@ export const RIM = 'rgba(255, 255, 255, .12)'; // --rim
 export const HALO = 'rgba(27, 127, 79, .42)'; // o halo do --accent atrás do celular
 export const FONTE = 'Inter, "Helvetica Neue", Arial, sans-serif';
 
-// O quadro: 4:5 em 1080×1350, 30 qps, 10 s.
+// O mestre: 9:16 em 1080×1920, 30 qps, 24 s. Os cortes de cada lugar (as
+// lojas, os Reels, o LinkedIn em 4:5, o site) saem dele na parte 2; por isso
+// o que importa fica na faixa central de 4:5 (de y = 285 a 1635), que o
+// conferir.sh recorta para conferir.
 export const LARGURA = 1080;
-export const ALTURA = 1350;
+export const ALTURA = 1920;
 export const QPS = 30;
-export const DURACAO = 300;
+export const DURACAO = 720;
+export const FAIXA_4X5_TOPO = (ALTURA - 1350) / 2; // 285
 
-// O número de testes sai da ficha técnica do historico/ACOMPANHAMENTO.md
-// (Tem na Geladeira: 1296 em 80 suítes, CI verde no a10376e, 08/10/2026).
-// Muda na véspera do render, junto com a ficha.
-export const TESTES = 1296;
-
-// O texto da cena 3 (inglês na tela, como o roteiro).
+// O texto que aparece no vídeo, em português (decisão do Wagner em 10/10/2026:
+// o vídeo vende e apresenta o app para quem vai usar; nada de testes). O
+// subtítulo é o da App Store (planos/PLANO-TEM-NA-GELADEIRA-1.0.md, "Textos
+// das lojas"). Sem emoji, sem nome de testador, sem selo de loja: só o texto
+// "Google Play" e "TestFlight".
 export const TEXTO = {
   titulo: 'Tem na Geladeira',
-  subtitulo: 'My recipe app, in beta on Google Play and TestFlight',
-  legenda: ['You tick what you have.', 'It shows what you can cook.'],
-  contador: 'automated tests in CI',
+  subtitulo: 'Receitas com o que você tem',
+  cena1: 'Marque o que você tem em casa.',
+  cena2: 'Veja o que dá para fazer agora.',
+  cena3: 'Abra a receita e ajuste as porções.',
+  chamada: 'Baixe o beta',
+  lojas: 'Google Play e TestFlight',
 } as const;

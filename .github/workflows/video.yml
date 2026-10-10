@@ -1,11 +1,11 @@
-# O render do vídeo de apresentação (video/), feito pelo Remotion no runner
+# O render do vídeo do Tem na Geladeira (video/), feito pelo Remotion no runner
 # do GitHub (4 vCPU, 16 GB), para poupar o Mac de 8 GB. Roda só no ramo
 # video-prova e à mão; não publica nada: o site sai do main, pelo Pages.
 # Segurança (regra "CI endurecido" do padroes/PADRONIZACAO.md): o token só
 # lê o repositório, as actions vão fixadas pelo SHA do commit (a versão no
 # comentário), nenhuma credencial fica gravada no checkout, o job tem
 # tempo-limite, e um envio novo cancela o anterior do mesmo ramo.
-name: Vídeo de apresentação
+name: Vídeo do Tem na Geladeira
 
 on:
   push:
@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   render:
-    name: Render da cena 3 (Remotion)
+    name: Render do mestre 9:16 (Remotion)
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     defaults:
@@ -52,7 +52,7 @@ jobs:
       - name: Baixar o Chrome Headless Shell do Remotion
         run: npx remotion browser ensure
 
-      - name: Renderizar a cena 3
+      - name: Renderizar o mestre
         run: npm run render
 
       - name: Instalar o ffmpeg e o ffprobe (a imagem do runner não os traz)
@@ -65,6 +65,6 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: cena-3
+          name: prova-2
           path: video/out/
           retention-days: 14

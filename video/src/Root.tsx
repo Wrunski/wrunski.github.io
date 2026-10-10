@@ -1,13 +1,13 @@
 import { Composition } from 'remotion';
-import { Cena3 } from './Cena3';
+import { Mestre } from './Mestre';
 import { ALTURA, DURACAO, LARGURA, QPS } from './tokens';
 
-// A prova da cena 3 do roteiro (VIDEO-APRESENTACAO-OPCOES.md, seção 4):
-// 4:5 (1080×1350), 30 qps, 10 s.
+// O mestre do vídeo do Tem na Geladeira: 9:16 (1080×1920), 30 qps, 24 s. Os
+// cortes de cada lugar saem dele na parte 2.
 export const Root: React.FC = () => (
   <Composition
-    id="cena3"
-    component={Cena3}
+    id="mestre"
+    component={Mestre}
     durationInFrames={DURACAO}
     fps={QPS}
     width={LARGURA}
