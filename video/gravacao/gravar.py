@@ -16,7 +16,8 @@ O que faz, na ordem:
    São dados de exemplo do próprio catálogo do app, nada pessoal.
 2. Põe a barra de status limpa (9:41, bateria cheia) e começa a gravar com o
    `xcrun simctl io recordVideo` (resolução nativa, 1320×2868 no Pro Max).
-3. Toca, com pausas de gente: a aba Despensa, "frango" e "ovo" (o aviso
+3. Toca, nos instantes do plano (ROTEIRO): a aba Despensa, "frango", um
+   arrasto curto na lista (o "ovo" fica abaixo da dobra) e "ovo" (o aviso
    "+N receitas para fazer agora" aparece no pé), a aba Início (a lista "Dá
    para fazer agora" mudou), a receita "Ovos com tomate à chinesa" e duas vezes
    "Mais porções" (2 → 4 porções, as quantidades dobram).
@@ -42,17 +43,24 @@ BASICOS = [
     'açúcar', 'farinha de trigo', 'arroz', 'leite', 'limão', 'tomate',
 ]
 
-# A coreografia gravada: (pausa antes, em segundos; o que tocar). O "aba" acha
-# o rótulo mais baixo na tela (a barra de abas, e não o título da tela).
+# A coreografia gravada: (o instante, em segundos desde o começo da gravação;
+# o que fazer). Os instantes são os do plano (o src/toques.json de 10/10, com
+# que o Mestre.tsx foi afinado): o script procura o elemento antes, que é a
+# parte lenta no WDA (uns 0,4 a 0,8 s por passo), e só espera o instante para
+# tocar; com pausas relativas, esse tempo somava toque a toque e a cena
+# chegava ao fim 5 s atrasada (visto em 12/10/2026). O "aba" acha o rótulo
+# mais baixo na tela (a barra de abas, e não o título da tela); o "rolar" é o
+# arrasto curto na lista, porque o "ovo" fica abaixo da dobra.
 ROTEIRO = [
     (1.6, 'aba', 'Despensa'),
-    (1.8, 'rotulo', 'frango'),
-    (1.8, 'rotulo', 'ovo'),
-    (2.8, 'aba', 'Início'),
-    (2.4, 'contem', 'Ovos com tomate à chinesa'),
-    (2.4, 'rotulo', 'Mais porções'),
-    (1.1, 'rotulo', 'Mais porções'),
-    (2.6, 'fim', ''),
+    (3.4, 'rotulo', 'frango'),
+    (3.7, 'rolar', 'ovo'),
+    (5.2, 'rotulo', 'ovo'),
+    (8.0, 'aba', 'Início'),
+    (11.2, 'contem', 'Ovos com tomate à chinesa'),
+    (13.6, 'rotulo', 'Mais porções'),
+    (14.7, 'rotulo', 'Mais porções'),
+    (17.3, 'fim', ''),
 ]
 
 # Quanto o toque demora para acontecer depois do pedido HTTP (medido no WDA:
@@ -126,6 +134,24 @@ class Wda:
         self.pedir('POST', f'/session/{self.sessao}/wda/dragfromtoforduration',
                    {'fromX': x1, 'fromY': y1, 'toX': x2, 'toY': y2, 'duration': dur})
 
+    # O arrasto sem inércia, pelas ações W3C do WDA: o dedo desce, anda em
+    # dur_ms, para 150 ms e só então solta; parado antes de soltar, a lista
+    # rola o tanto do arrasto e não desliza depois. O dragfromtoforduration
+    # solta em movimento, e a lista seguia rolando quando o toque seguinte
+    # caía (12/10/2026: o "ovo" não marcava).
+    def arrastar_parado(self, x, y1, y2, dur_ms=320):
+        self.pedir('POST', f'/session/{self.sessao}/actions', {'actions': [{
+            'type': 'pointer', 'id': 'dedo', 'parameters': {'pointerType': 'touch'},
+            'actions': [
+                {'type': 'pointerMove', 'duration': 0, 'x': x, 'y': y1},
+                {'type': 'pointerDown', 'button': 0},
+                {'type': 'pause', 'duration': 80},
+                {'type': 'pointerMove', 'duration': dur_ms, 'x': x, 'y': y2},
+                {'type': 'pause', 'duration': 150},
+                {'type': 'pointerUp', 'button': 0},
+            ],
+        }]})
+
     def tela(self):
         r = self.pedir('GET', f'/session/{self.sessao}/window/size')
         return r['value']['width'], r['value']['height']
@@ -161,6 +187,17 @@ class Gravador:
         r = dentro[-1] if baixo else dentro[0]
         return (r[0] + r[2] / 2, r[1] + r[3] / 2)
 
+    # Procura de novo, a cada 0,25 s, até achar ou até 2 s depois do instante
+    # do toque: depois de uma troca de aba, a lista nova leva um momento para
+    # entrar na árvore de acessibilidade (o Início, em 12/10/2026, só apareceu
+    # uns 3 s depois do toque na aba).
+    def achar_ate(self, modo, texto, baixo, instante):
+        while True:
+            p = self.achar(modo, texto, baixo)
+            if p or time.monotonic() - self.t0 > instante + 2.0:
+                return p
+            time.sleep(0.25)
+
     def rolar(self, para_baixo=True, fracao=0.45):
         x = self.largura / 2
         y1 = self.altura * (0.72 if para_baixo else 0.3)
@@ -183,6 +220,9 @@ class Gravador:
         p = self.achar(modo, texto, baixo) if gravar else self.achar_rolando(modo, texto, baixo)
         if not p:
             raise RuntimeError(f'não achei "{texto}" na tela')
+        self.tocar_em(p, texto, gravar)
+
+    def tocar_em(self, p, texto, gravar=True):
         x, y = p
         t_envio = time.monotonic()
         self.wda.tocar_xy(x, y)
@@ -216,6 +256,32 @@ class Gravador:
             raise RuntimeError('depois do "Pronto", o Início não apareceu')
         passo('o app está no Início, com a despensa de exemplo')
 
+    # ---- a rolagem curta, na gravação -----------------------------------
+    # A Proteína abre em ordem alfabética e "ovo" fica três linhas abaixo de
+    # "frango", atrás da barra de abas, e a Despensa volta ao topo a cada
+    # troca de aba (visto em 12/10/2026, nas duas primeiras gravações). Um
+    # arrasto curto, visível na cena, sobe a lista até o rótulo ficar
+    # inteiro acima da barra; sem anel de toque, porque não é toque. Sem
+    # inércia, a lista rola o tanto do arrasto: 160 pt deixam o "ovo" perto
+    # de onde o plano o previa (y ≈ 780).
+    def rolar_ate(self, texto, passo_pt=160):
+        limite = self.altura - 130
+        x = self.largura / 2
+        y1 = self.altura * 0.72
+        for _ in range(3):
+            self.wda.arrastar_parado(x, y1, y1 - passo_pt)
+            time.sleep(0.2)
+            p = self.achar('rotulo', texto)
+            if p and p[1] <= limite:
+                passo(f'rolei: "{texto}" visível em y={p[1]:.0f}, em {time.monotonic() - self.t0:.2f}s')
+                return p
+        raise RuntimeError(f'"{texto}" não apareceu depois de rolar')
+
+    def esperar_ate(self, instante):
+        atraso = self.t0 + instante - time.monotonic()
+        if atraso > 0:
+            time.sleep(atraso)
+
     # ---- a gravação -------------------------------------------------------
     def barra_de_status(self, limpar=False):
         if limpar:
@@ -245,13 +311,30 @@ class Gravador:
                     break
                 if proc.poll() is not None or time.monotonic() - inicio > 30:
                     raise RuntimeError(f'a gravação não começou: {linha.strip()}')
-            for pausa, modo, texto in ROTEIRO:
-                time.sleep(pausa)
+            anterior = 0.0
+            pronto = None  # o elemento que o "rolar" já deixou achado
+            for instante, modo, texto in ROTEIRO:
                 if modo == 'fim':
+                    self.esperar_ate(instante)
                     break
-                self.tocar(modo, texto, baixo=(modo == 'aba'))
-                if modo == 'aba':
-                    pass
+                # O app assenta um pouco depois do passo anterior; depois o
+                # elemento é procurado, e o toque espera o instante.
+                self.esperar_ate(min(anterior + 0.5, instante - 0.05))
+                if modo == 'rolar':
+                    self.esperar_ate(instante)
+                    pronto = (texto, self.rolar_ate(texto))
+                    anterior = time.monotonic() - self.t0
+                    continue
+                if pronto and pronto[0] == texto:
+                    p = pronto[1]
+                else:
+                    p = self.achar_ate(modo, texto, (modo == 'aba'), instante)
+                pronto = None
+                if not p:
+                    raise RuntimeError(f'não achei "{texto}" na tela')
+                self.esperar_ate(instante)
+                self.tocar_em(p, texto)
+                anterior = instante
             duracao = time.monotonic() - self.t0
         finally:
             proc.send_signal(signal.SIGINT)

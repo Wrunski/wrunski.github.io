@@ -1,6 +1,6 @@
 # O vídeo do Tem na Geladeira, feito em código
 
-*Última atualização: 10/10/2026*
+*Última atualização: 12/10/2026*
 
 A prova 2 do vídeo do Tem na Geladeira (decisão do Wagner em 10/10/2026,
 depois da prova 1: o vídeo vende e apresenta o app para quem vai usar, em
@@ -72,22 +72,26 @@ A gravação é do simulador do iOS, com os toques por script (o
 WebDriverAgent, o mesmo do `aparelho.sh iphone`, mas no simulador), sem
 compilar nada:
 
-1. `saude`, e o simulador ligado: `xcrun simctl boot <udid>` (o iPhone 17
-   Pro Max, iOS 26.5). Pesado: uma coisa por vez.
-2. O app, de um `.app` já compilado para o simulador (o Expo deixa um em
-   `~/Library/Developer/CoreSimulator/Devices/<udid>/data/Containers/Bundle/Application/<id>/TemnaGeladeira.app`
-   do simulador em que rodou): `xcrun simctl uninstall <udid> com.wrunski.temnageladeira`
-   e `xcrun simctl install <udid> <TemnaGeladeira.app>`, para começar limpo
-   (a tela de primeira abertura precisa aparecer).
-3. O WDA: `bash gravacao/wda-sim.sh preparar <WebDriverAgentRunner-Runner.app> <pasta>`
+1. `saude`. O simulador (o iPhone 17 Pro Max, iOS 26.5), quem liga é o
+   `xcodebuild` do passo 2; não o ligue antes com `xcrun simctl boot`,
+   porque, com um simulador ligado, o `saude` do hook barra o `xcodebuild`
+   (visto em 12/10/2026). Pesado: uma coisa por vez.
+2. O WDA: `bash gravacao/wda-sim.sh preparar <WebDriverAgentRunner-Runner.app> <pasta>`
    (o runner já compilado para o simulador, que o Appium deixa no mesmo lugar
    dos apps), e o `xcodebuild test-without-building` que o `wda-sim.sh subir`
    imprime, em segundo plano; `bash gravacao/wda-sim.sh esperar`.
+3. O app, de um `.app` já compilado para o simulador (o Expo deixa um em
+   `~/Library/Developer/CoreSimulator/Devices/<udid>/data/Containers/Bundle/Application/<id>/TemnaGeladeira.app`
+   do simulador em que rodou; em 12/10 foi o do build 3 de 08/10, do
+   `iPhone 17 Pro Max iOS 27 (Dev)`): `xcrun simctl uninstall <udid> com.wrunski.temnageladeira`
+   e `xcrun simctl install <udid> <TemnaGeladeira.app>`, com o simulador já
+   ligado, para começar limpo (a tela de primeira abertura precisa aparecer).
 4. `python3 gravacao/gravar.py --simulador <udid> --saida <pasta>`: marca os
    básicos de exemplo na primeira abertura, grava com o
-   `xcrun simctl io recordVideo` e toca a coreografia (a Despensa, "frango",
-   "ovo", o Início, "Ovos com tomate à chinesa" e duas vezes "Mais porções").
-   Sai `app.mov` e `toques.json`.
+   `xcrun simctl io recordVideo` e toca a coreografia nos instantes do plano
+   (a Despensa, "frango", um arrasto curto na lista, porque o "ovo" fica
+   abaixo da dobra, "ovo", o Início, "Ovos com tomate à chinesa" e duas
+   vezes "Mais porções"). Sai `app.mov` e `toques.json`.
 5. `bash gravacao/converter.sh <pasta>/app.mov public/app.mp4 6 <pasta>/toques.json`:
    30 qps fixos, a resolução nativa, o último quadro segurado por 6 s, e o
    número de quadros gravado no `toques.json`, que vai para `src/toques.json`.

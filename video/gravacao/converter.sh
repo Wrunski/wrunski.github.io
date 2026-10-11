@@ -22,9 +22,13 @@ TOQUES=${4:-}
 [[ -f "$ENTRADA" ]] || { echo "não achei $ENTRADA" >&2; exit 1; }
 [[ -x "$FFMPEG" && -x "$FFPROBE" ]] || { echo "ffmpeg/ffprobe não encontrados" >&2; exit 1; }
 
-# A largura e a altura ficam as da gravação (pares, para o yuv420p).
+# A largura e a altura ficam as da gravação (pares, para o yuv420p). O
+# eof_action=pass do fps garante o último quadro da gravação: o simctl só
+# grava quadro quando a tela muda, e o último (as 4 porções, 18 ms depois
+# do penúltimo) era descartado no arredondamento do fim, e o tpad segurava
+# o quadro anterior, das 3 porções (visto em 12/10/2026).
 "$FFMPEG" -v error -y -i "$ENTRADA" -an \
-  -vf "fps=30,scale=trunc(iw/2)*2:trunc(ih/2)*2,setsar=1,tpad=stop_mode=clone:stop_duration=$SEGURAR,format=yuv420p" \
+  -vf "fps=30:eof_action=pass,scale=trunc(iw/2)*2:trunc(ih/2)*2,setsar=1,tpad=stop_mode=clone:stop_duration=$SEGURAR,format=yuv420p" \
   -c:v libx264 -preset slow -crf 20 -profile:v high -pix_fmt yuv420p -movflags +faststart "$SAIDA"
 
 "$FFPROBE" -v error -select_streams v:0 \
