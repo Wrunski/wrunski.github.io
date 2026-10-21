@@ -1,6 +1,6 @@
 # Testes do site
 
-*Última atualização: 08/10/2026*
+*Última atualização: 21/10/2026*
 
 Testes de ponta a ponta do site wrunski.github.io, escritos com o
 [Playwright](https://playwright.dev) e rodados pelo GitHub Actions a cada
@@ -19,6 +19,7 @@ internet, fora as fontes do Google que a própria página carrega.
 | `celular.spec.ts` | Numa tela de 375 px (o iPhone pequeno), nenhuma página rola de lado, em nenhum dos três idiomas. O menu do celular aparece, abre e fecha pelo teclado (Esc) |
 | `tema.spec.ts` | Quando o sistema está no modo escuro, o fundo fica preto e o texto claro; no claro, o contrário. O teste mede a cor que o navegador aplicou, e não o que o CSS promete |
 | `ancoras.spec.ts` | As âncoras `#trabalho`, `#work` e `#trabajo` do site antigo, que já foram enviadas em currículo e mensagens, existem uma vez só, rolam a página até os apps e ficam logo antes da seção do Organizador |
+| `teste-publico.spec.ts` | Na `/testes/`, nos três idiomas, o cartão Android do Organizador traz os dois passos do teste público, como o do Tem na Geladeira: o link do Grupo do Google dos testadores e o do teste na Google Play, com o pedido dos 14 dias. E o "por convite" de antes (em inglês, "by invitation"; em espanhol, "por invitación") não volta à `/testes/` nem à página do app |
 | `csp.spec.ts` | Cada página traz a Content-Security-Policy em `<meta>`: por padrão só o próprio site, script só do próprio site, sem `unsafe-inline` nem `eval`, e de fora só as fontes do Google. E a página carrega inteira sem o navegador reclamar de nenhuma violação |
 | `acessibilidade.spec.ts` | O [axe-core](https://github.com/dequelabs/axe-core), o mesmo motor do Lighthouse, roda as regras das WCAG 2.2 (níveis A e AA) em cada página, no tema claro e com a animação de entrada desligada (senão ele mede o contraste no meio do esmaecimento e acusa um defeito que não existe). Qualquer violação séria ou crítica (contraste insuficiente, imagem sem alternativa, botão sem nome, controle fora do teclado) reprova. As menores ficam anexadas ao relatório, para revisão |
 
