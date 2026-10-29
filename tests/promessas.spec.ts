@@ -65,6 +65,47 @@ const LINHA_DO_PRO: Record<Idioma, string> = {
 // escura da 2.1 entrar, este teste muda junto.
 const IMAGEM_ESCURA_DA_1_7 = 'organizador-escuro';
 
+// A 2.1 traz a compra do Pro, feita pela loja do aparelho (o passo 5d da
+// planos/BUILD-2.1.md). Na página do app, o título da internet conta três
+// funções (o conversor, o relatório de erro e a compra), e nenhuma leva os
+// lançamentos (a decisão do Wagner às 10:1x de 28/10/2026); o parágrafo dele
+// conta a compra. O título de antes, o das duas funções, não volta.
+const DUAS_FUNCOES = ['duas funções usam a internet', 'two features use the internet', 'dos funciones usan internet'];
+const TRES_FUNCOES: Record<Idioma, string> = {
+  pt: 'Três funções usam a internet, e nenhuma leva seus lançamentos',
+  en: 'Three features use the internet, and none carries your entries',
+  es: 'Tres funciones usan internet, y ninguna lleva tus registros',
+};
+const COMPRA_PELA_LOJA: Record<Idioma, string> = {
+  pt: 'A compra do Pro é feita e conferida pela loja do aparelho: o app não recebe o seu cartão nem nos manda o recibo.',
+  en: 'The Pro purchase is made and verified by your device’s store: the app doesn’t receive your card or send us the receipt.',
+  es: 'La compra de Pro la hace y la verifica la tienda de tu dispositivo: la app no recibe tu tarjeta ni nos envía el recibo.',
+};
+
+// No alto da página do app e no cartão do Organizador no Início: o Pro em uma
+// linha (o que a compra libera, como a tela de compra do app) e o "funciona
+// sem internet" com o que precisa dela, a cotação do conversor e a compra. A
+// frase de antes, sem a exceção, não volta.
+const LINHA_DO_PRO_NO_APP: Record<Idioma, string> = {
+  pt: 'O Pro, uma compra única opcional, libera os relatórios, a exportação em CSV e PDF, o conversor e a simulação de dívidas.',
+  en: 'Pro, an optional one-time purchase, unlocks the reports, CSV and PDF export, the converter and the debt payoff simulation.',
+  es: 'Pro, una compra única opcional, desbloquea los informes, la exportación en CSV y PDF, el conversor y la simulación de deudas.',
+};
+const SEM_INTERNET: Record<Idioma, string> = {
+  pt: 'funciona sem internet, exceto a cotação do conversor e a compra do Pro.',
+  en: 'it works without internet, except for the converter’s exchange rate and the Pro purchase.',
+  es: 'funciona sin internet, salvo el tipo de cambio del conversor y la compra de Pro.',
+};
+const SEM_INTERNET_DE_ANTES = [
+  'sem servidor: funciona sem internet.',
+  'no server: it works without internet.',
+  'sin servidor: funciona sin internet.',
+];
+const TOPO_DO_ORGANIZADOR = [
+  { caminho: '/apps/organizador-financas/', seletor: '.hero p.sub:visible' },
+  { caminho: '/', seletor: '#organizador p.lead:visible' },
+];
+
 test.describe('as frases sobre o Organizador', () => {
   for (const caminho of PAGINAS_DO_ORGANIZADOR) {
     test(`em ${caminho}, as três frases de antes sumiram dos três idiomas`, async ({ request }) => {
@@ -113,6 +154,44 @@ test.describe('a /testes/ sem o "de graça"', () => {
         .filter({ has: page.locator('h2', { hasText: 'Organizador de Finanças' }) });
       await expect(organizador.locator('p.lead')).toBeVisible();
       await expect(organizador.locator('p.lead')).toContainText(LINHA_DO_PRO[idioma]);
+    });
+  }
+});
+
+test.describe('a 2.1: a compra do Pro e a internet', () => {
+  test('na página do app, o título de antes, o das duas funções, sumiu dos três idiomas', async ({ request }) => {
+    const html = (await fonte(request, '/apps/organizador-financas/')).toLowerCase();
+    for (const frase of DUAS_FUNCOES) {
+      expect(html, `"${frase}" na página do app`).not.toContain(frase);
+    }
+  });
+
+  for (const { caminho } of TOPO_DO_ORGANIZADOR) {
+    test(`em ${caminho}, o "funciona sem internet" de antes, sem a exceção, sumiu dos três idiomas`, async ({ request }) => {
+      const html = (await fonte(request, caminho)).toLowerCase();
+      for (const frase of SEM_INTERNET_DE_ANTES) {
+        expect(html, `"${frase}" em ${caminho}`).not.toContain(frase);
+      }
+    });
+  }
+
+  for (const idioma of IDIOMAS) {
+    test(`na página do app, em ${idioma}, três funções usam a internet, e a compra passa pela loja`, async ({ page }) => {
+      await abrir(page, '/apps/organizador-financas/', idioma);
+      const cartao = page
+        .locator('#privacidade li > div:visible')
+        .filter({ has: page.locator('h3', { hasText: TRES_FUNCOES[idioma] }) });
+      await expect(cartao).toHaveCount(1);
+      await expect(cartao.locator('p')).toContainText(COMPRA_PELA_LOJA[idioma]);
+    });
+
+    test(`em ${idioma}, o alto da página do app e o cartão do Início dizem o Pro em uma linha e o que precisa de internet`, async ({ page }) => {
+      for (const { caminho, seletor } of TOPO_DO_ORGANIZADOR) {
+        await abrir(page, caminho, idioma);
+        const texto = page.locator(seletor);
+        await expect(texto, `o Pro em ${caminho}`).toContainText(LINHA_DO_PRO_NO_APP[idioma]);
+        await expect(texto, `a internet em ${caminho}`).toContainText(SEM_INTERNET[idioma]);
+      }
     });
   }
 });
